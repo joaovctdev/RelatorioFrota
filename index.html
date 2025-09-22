@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório Frota - Norte Tech Irecê - BA</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="header" id="mainHeader">
+      <div class="header-content">
+        <h1>Relatório Frota - Norte Tech Irecê - BA</h1>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Botões de navegação -->
+      <div class="nav-buttons">
+        <button class="nav-button" onclick="scrollToSection('filters')">
+          <i class="fa fa-usd" aria-hidden="true"></i> Financeiro
+        </button>
+        <button
+          class="nav-button"
+          onclick="scrollToSection('relatoriofotografico')"
+        >
+          <i class="fas fa-camera"></i> Relatório Fotográfico
+        </button>
+        <button
+          class="nav-button"
+          onclick="scrollToSection('relatoriomanutencao')"
+        >
+          <i class="fas fa-tools"></i> Relatório Manutenção
+        </button>
+        <button class="nav-button" onclick="scrollToSection('status-frota')">
+          <i class="fas fa-info-circle"></i> Status</button
+        ><button class="nav-button" onclick="scrollToSection('rastreio')">
+          <i class="fas fa-map-marker-alt"></i>
+          Rastreamento
+        </button>
+        <button class="nav-button disabled">
+          <i class="fas fa-chart-line"></i> Relatório gráfico
+          <b class="embreve">Em breve ⏳</b>
+        </button>
+      </div>
+
+      <!-- Filtros Financeiros -->
+      <div class="filters" id="filters">
+        <div class="filter-group">
+          <label for="monthFilter">Filtrar por Mês</label>
+          <select id="monthFilter">
+            <option value="all">Todos os meses</option>
+            <option value="0">Janeiro</option>
+            <option value="1">Fevereiro</option>
+            <option value="2">Março</option>
+            <option value="3">Abril</option>
+            <option value="4">Maio</option>
+            <option value="5">Junho</option>
+            <option value="6">Julho</option>
+            <option value="7">Agosto</option>
+            <option value="8">Setembro</option>
+            <option value="9">Outubro</option>
+            <option value="10">Novembro</option>
+            <option value="11">Dezembro</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="weekFilter">Filtrar por Semana</label>
+          <select id="weekFilter">
+            <option value="all">Todas as semanas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="placaFilter">Filtrar por Placa</label>
+          <select id="placaFilter">
+            <option value="all">Todas as placas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="manutencaoFilter">Filtrar por Manutenção</label>
+          <select id="manutencaoFilter">
+            <option value="all">Todos os tipos</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Resumo Financeiro -->
+      <div class="report-summary">
+        <div class="summary-card">
+          <h3>Total Gasto</h3>
+          <div class="value" id="totalSpent">R$ 0,00</div>
+        </div>
+        <div class="summary-card">
+          <h3>Maior Despesa</h3>
+          <div class="value" id="highestExpense">R$ 0,00</div>
+        </div>
+        <div class="summary-card">
+          <h3>Média por Veículo</h3>
+          <div class="value" id="averagePerVehicle">R$ 0,00</div>
+        </div>
+      </div>
+
+      <!-- Tabela Financeira -->
+      <div class="loading" id="loadingIndicator">
+        <i class="fas fa-spinner fa-spin"></i> Carregando dados...
+      </div>
+
+      <div class="table-container" id="tableContainer">
+        <button
+          class="toggle-table-btn"
+          id="toggleTableBtn"
+          title="Recolher/Expandir Tabela"
+        >
+          <i class="fas fa-chevron-down" id="toggleIcon"></i>
+        </button>
+
+        <table class="data-table" id="dataTable" style="display: none">
+          <thead>
+            <tr>
+              <th data-sort="fornecedor">
+                Fornecedor <i class="fas fa-sort"></i>
+              </th>
+              <th data-sort="data">
+                Data de Emissão <i class="fas fa-sort"></i>
+              </th>
+              <th data-sort="placa">Placa <i class="fas fa-sort"></i></th>
+              <th data-sort="manutencao">
+                Manutenção <i class="fas fa-sort"></i>
+              </th>
+              <th data-sort="prazo">
+                Prazo Pagamento <i class="fas fa-sort"></i>
+              </th>
+              <th data-sort="preco">Preço <i class="fas fa-sort"></i></th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Os dados serão inseridos aqui via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Controle de Frota -->
+      <div class="controls" id="status-frota">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Pesquisar veículo..."
+          />
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn" data-status="all">
+            <i class="fas fa-list"></i> Todos
+          </button>
+          <button class="filter-btn" data-status="operacao">
+            <i class="fas fa-play-circle"></i> Em Operação
+          </button>
+          <button class="filter-btn" data-status="ocioso">
+            <i class="fas fa-pause-circle"></i> Ociosos
+          </button>
+          <button class="filter-btn" data-status="oficina">
+            <i class="fas fa-tools"></i> Na Oficina
+          </button>
+        </div>
+      </div>
+      <!-- Tabela de Frota -->
+      <div class="table-container">
+        <table class="frota-table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Placa</th>
+              <th>Função</th>
+              <th>Motorista</th>
+              <th>Encarregado</th>
+              <th>Supervisor</th>
+              <th>Local</th>
+            </tr>
+          </thead>
+          <tbody id="frota-table-body">
+            <tr>
+              <td colspan="7">
+                <div class="loading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <p>Carregando dados da frota...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="trajeto-header" id="rastreio">
+        <h1>Relatório de Trajeto</h1>
+        <p>Visualize os trajetos percorridos pelos veículos da frota</p>
+      </div>
+
+      <div class="filters-container">
+        <div class="filter-item">
+          <label for="month-filter">Filtrar por Mês</label>
+          <select id="month-filter">
+            <option value="all">Todos os meses</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="week-filter">Filtrar por Semana</label>
+          <select id="week-filter">
+            <option value="all">Todas as semanas</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="placa-filter">Filtrar por Placa</label>
+          <select id="placa-filter">
+            <option value="all">Todas as placas</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="maintenance-filter">Filtrar por Manutenção</label>
+          <select id="maintenance-filter">
+            <option value="all">Todos os status</option>
+            <option value="com_manutencao">Com manutenção</option>
+            <option value="sem_manutencao">Sem manutenção</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="trajeto-container">
+        <div class="placas-container">
+          <div class="placas-header">
+            <h2>Veículos</h2>
+            <span id="placas-count">0</span>
+          </div>
+
+          <input
+            type="text"
+            class="search-placas"
+            placeholder="Buscar placa..."
+            id="search-placas"
+          />
+
+          <div class="filter-group">
+            <label for="type-filter">Filtrar por tipo</label>
+            <select id="type-filter">
+              <option value="all">Todos os tipos</option>
+              <option value="Pesado">Pesado</option>
+              <option value="Leve">Leve</option>
+            </select>
+          </div>
+
+          <div class="placas-list" id="placas-list">
+            <!-- As placas serão inseridas aqui via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Painel de detalhes -->
+        <div class="details-panel" id="details-panel">
+          <div id="no-data-selected" style="display: block">
+            <i class="fas fa-mouse-pointer"></i>
+            <p>Selecione um veículo para visualizar o relatório de trajeto</p>
+          </div>
+
+          <div id="details-content" style="display: none">
+            <div class="details-header">
+              <h2>
+                <i class="fas fa-truck"></i> <span id="placa-text"></span>
+                <span class="porte-badge" id="porte-text"></span>
+              </h2>
+              <button class="close-panel" id="close-panel">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="filter-group">
+              <label for="detail-date-filter">Data</label>
+              <select id="detail-date-filter">
+                <!-- As opções serão preenchidas via JavaScript -->
+              </select>
+            </div>
+
+            <div class="details-main-content">
+              <div class="details-left">
+                <div class="details-grid">
+                  <!-- Os dados serão preenchidos via JavaScript -->
+                </div>
+              </div>
+
+              <div class="details-right">
+                <div class="map-container">
+                  <h3><i class="fas fa-map-marked-alt"></i> Mapa do Trajeto</h3>
+                  <div id="map-placeholder" class="map-placeholder">
+                    <i class="fas fa-map"></i>
+                    <p>Carregando mapa...</p>
+                  </div>
+                  <img
+                    id="map-image"
+                    src=""
+                    alt="Mapa do trajeto"
+                    style="display: none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal para imagem ampliada -->
+      <div id="image-modal" class="modal">
+        <span class="close-modal" id="close-modal">&times;</span>
+        <img class="modal-content" id="modal-image" />
+      </div>
+
+      <!-- Relatório Fotográfico -->
+      <div class="relatorio-fotografico" id="relatoriofotografico">
+        <h2>Relatório Fotográfico</h2>
+        <div class="filters-fotos">
+          <div class="filter-group">
+            <label for="fotoMonthFilter">Filtrar por Mês</label>
+            <select id="fotoMonthFilter">
+              <option value="all">Todos os meses</option>
+              <option value="8">Setembro</option>
+              <option value="9">Outubro</option>
+              <option value="10">Novembro</option>
+              <option value="11">Dezembro</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="fotoWeekFilter">Filtrar por Semana</label>
+            <select id="fotoWeekFilter">
+              <option value="all">Todas as semanas</option>
+              <option value="1">Semana 1</option>
+              <option value="2">Semana 2</option>
+              <option value="3">Semana 3</option>
+              <option value="4">Semana 4</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="fotoFrotaFilter">Filtrar por Frota</label>
+            <select id="fotoFrotaFilter">
+              <option value="all">Todas as frotas</option>
+              <option value="LEVE">Leve</option>
+              <option value="PESADA">Pesada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="galeria-veiculos" id="galeriaVeiculos">
+          <!-- As fotos dos veículos serão inseridas aqui via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Relatório de Manutenção -->
+      <div class="relatorio-manutencao" id="relatoriomanutencao">
+        <h2>Relatório de Manutenção</h2>
+
+        <div class="filters-manutencao">
+          <div class="filter-group">
+            <label for="manutencaoMonthFilter">Filtrar por Mês</label>
+            <select id="manutencaoMonthFilter">
+              <option value="all">Todos os meses</option>
+              <option value="0">Janeiro</option>
+              <option value="1">Fevereiro</option>
+              <option value="2">Março</option>
+              <option value="3">Abril</option>
+              <option value="4">Maio</option>
+              <option value="5">Junho</option>
+              <option value="6">Julho</option>
+              <option value="7">Agosto</option>
+              <option value="8">Setembro</option>
+              <option value="9">Outubro</option>
+              <option value="10">Novembro</option>
+              <option value="11">Dezembro</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="manutencaoWeekFilter">Filtrar por Semana</label>
+            <select id="manutencaoWeekFilter">
+              <option value="all">Todas as semanas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="manutencaoPlacaFilter">Filtrar por Placa</label>
+            <select id="manutencaoPlacaFilter">
+              <option value="all">Todas as placas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="manutencaoTipoFilter">Filtrar por Tipo</label>
+            <select id="manutencaoTipoFilter">
+              <option value="all">Todos os tipos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="galeria-manutencao" id="galeriaManutencao">
+          <!-- Os dados de manutenção serão inseridos aqui via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>
+        v 1.0 • Desenvolvido para o controle de frota • João Victor Santos ©
+        2025
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,324 @@
+[
+    {
+        "PLACA": "PHQ-1D82",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "JOSAFÁ FERREIRA",
+        "ENCARREGADO": "EDIMILSON",
+        "SUPERVISOR": "HIAGO",
+        "LOCAL": "BARRO ALTO",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "PHV-1I75",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "EDSON CONCEIÇÃO",
+        "ENCARREGADO": "WILLIAN SILVA",
+        "SUPERVISOR": "DJALMA",
+        "LOCAL": "MORRO DE CHAPÉU",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "PHV-1J15",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "OBRA": "BASE IRECE",
+        "STATUS": "OCIOSO"
+       
+    },
+    {
+        "PLACA": "PHV-1J25",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "OFICINA",
+        "OBRA": "AV DIESEL",
+        "STATUS": "EM OFICINA",
+        "DIAS_OFICINA": 8,
+        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NO ACELERADOR",
+        "DATA_ENTRADA": "2025-09-11"
+    },
+    {
+        "PLACA": "PHV-1J35",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "IAGO DOURADO",
+        "ENCARREGADO": "EDILSON SOUZA",
+        "SUPERVISOR": "DJALMA",
+        "LOCAL": "MORRO DE CHAPÉU",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "PHV-1J75",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "JAILSON FÉLIX",
+        "ENCARREGADO": "JAILSON",
+        "SUPERVISOR": "HIAGO",
+        "LOCAL": "BARRO ALTO",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "PHV-1J85",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "ERINALDO",
+        "ENCARREGADO": "ENES",
+        "SUPERVISOR": "RENATO",
+        "LOCAL": "SÃO GABRIEL",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "PHV-1J95",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "EDVALDO LUIZ",
+        "ENCARREGADO": "JARBAS AMORIM",
+        "SUPERVISOR": "HIAGO",
+        "LOCAL": "IBIPEBA",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZB-8F85",
+        "FUNCAO": "LINHA VIVA",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "GABRIEL",
+        "SUPERVISOR": "ELOY YULO",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+    },
+    {
+        "PLACA": "TGX-6I54",
+        "FUNCAO": "LINHA VIVA",
+        "MOTORISTA": "KLEBER ALVES",
+        "ENCARREGADO": "GABRIEL",
+        "SUPERVISOR": "ELOY YULO",
+        "LOCAL": "MATA VERDE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZC-9J71",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "SÉRGIO DE SOUZA",
+        "ENCARREGADO": "ESMERALDO",
+        "SUPERVISOR": "RENATO",
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZB-6E32",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "ÉRCULES FRANCISCO",
+        "ENCARREGADO": "ALAN NUNES",
+        "SUPERVISOR": "DJALMA",
+        "LOCAL": "HIDRAULICA AMORIM",
+        "STATUS": "EM OFICINA",
+        "DIAS_OFICINA": 2,
+        "DESCRICAO": "EQUIPAMENTO APRESENTOU FALHA NA VÁLVULA HIDARAULICA",
+        "DATA_ENTRADA": "2025-09-11"
+    },
+    {
+        "PLACA": "QZL-7E78",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+    },
+    {
+        "PLACA": "QZT-7H96",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "JOÃO PAULO",
+        "ENCARREGADO": "VANILSON",
+        "SUPERVISOR": "DJALMA",
+        "LOCAL": "AGUADA NOVA",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "SKS-0A44",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+    },
+    {
+        "PLACA": "SKS-2C90",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "JUVENAL SOUTO",
+        "ENCARREGADO": "ALEX SANDRO",
+        "SUPERVISOR": "DJALMA",
+        "LOCAL": "MORRO DE CHAPÉU",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "SKS-4B16",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "GILVAN FERNANDES",
+        "ENCARREGADO": "IRISMAR",
+        "SUPERVISOR": "HIAGO",
+        "LOCAL": "MATA VERDE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "SKT-5B65",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "ORLY BARRETO",
+        "ENCARREGADO": "MARCOS PAULO",
+        "SUPERVISOR": "HIAGO",
+        "LOCAL": "MATA VERDE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "SKT-8C58",
+        "FUNCAO": "LINHA MORTA",
+        "MOTORISTA": "RAILLAN ANDRADE",
+        "ENCARREGADO": "GIORLAN",
+        "SUPERVISOR": "RENATO",
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TSC-3G04",
+        "FUNCAO": "CARGA / DESCARGA",
+        "MOTORISTA": "EDER DOURADO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "CLEONE",
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZZ-8F36",
+        "FUNCAO": "CARGA / DESCARGA",
+        "MOTORISTA": "RÓBERIO RIBEIRO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "CLEONE",
+        "LOCAL": "IRECÊ",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "EMP-0003",
+        "FUNCAO": "CARGA / DESCARGA",
+        "MOTORISTA": "JOANES",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "CLEONE",
+        "LOCAL": "IRECÊ / ALMOXARIFADO",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TRX-3A42",
+        "FUNCAO": "TRANSPORTE",
+        "MOTORISTA": "THIAGO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BAIXA GRANDE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "RET-0002",
+        "FUNCAO": "ESCAVAÇÃO",
+        "MOTORISTA": "WESLEI CONCEIÇÃO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "ELOY",
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZT-2J09",
+        "FUNCAO": "SUPERVISÃO",
+        "MOTORISTA": "RENATO ALVES",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TAD-0A10",
+        "FUNCAO": "PODA",
+        "MOTORISTA": "MANUEL",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "ELOY",
+        "LOCAL": "LAGOA DO BOI",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TAF-2F09",
+        "FUNCAO": "LC / KIT",
+        "MOTORISTA": "CARLEY",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "ELOY",
+        "LOCAL": "LAGOA DO BOI",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TAF-4E49",
+        "FUNCAO": "SUPERVISÃO",
+        "MOTORISTA": "HIAGO DE CERQUEIRA",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "EM OPERAÇÃO"
+        
+    },
+    {
+        "PLACA": "TAH-0I27",
+        "FUNCAO": "SUPERVISÃO",
+        "MOTORISTA": "VAGNO NOVAIS",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "ELOY",
+        "LOCAL": "LAGOA DO BOI",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZJ-5F26",
+        "FUNCAO": "PASSEIO",
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+    },
+    {
+        "PLACA": "QZE-3I91",
+        "FUNCAO": "SESMT",
+        "MOTORISTA": "TAMIRES / NORMANDA",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "EDINILSON",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+    },
+    {
+        "PLACA": "QZJ-7A95",
+        "FUNCAO": "VIABILIZAÇÃO",
+        "MOTORISTA": "ADILSON NERI",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "CAFARNAUM",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZJ-7D75",
+        "FUNCAO": "VIABILIZAÇÃO",
+        "MOTORISTA": "ANTONIO DURVAL",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "LAGOA DO BOI",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "QZU-8H95",
+        "FUNCAO": "FROTA",
+        "MOTORISTA": "MÁRCIO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "MORRO DE CHAPÉU",
+        "STATUS": "EM OPERAÇÃO"
+    }
+   
+
+
+
+
+
+]

@@ -1,0 +1,75 @@
+[
+     {
+        "MES": "SETEMBRO",
+        "SEMANA": "1",
+        "PLACA": "PHV-1J35",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1ERLG-HwlybBM5W2ZFKBpxfBNLNYk8297/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/16LMSmKU3iCW55QwCN7n7iyItdUI51GYq/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1gfDknVHkbJkr-dRs-lLsTf3RyZX2psVx/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1-OOU4-C4wyU1c-X3DL9PFrPNKvJW74g4/view?usp=drive_link",
+        "DESCRICAO": "EQUIPAMENTO APRESENTOU VAZAMENTO NA CONEXÃO DA MANGUEIRA, SUPORTE DO CICLISTA SOLTO, E ROSCA DA CONEXÃO DA LANÇA COM AVÁRIA - NECESSÁRIO TROCAR A MANGUEIRA, CONEXÃO, SOLDA NA LANÇA E NO SUPORTE",
+        "CUSTO": 1090
+    },
+    {
+        "MES": "SETEMBRO",
+        "SEMANA": "1",
+        "PLACA": "QZC-9J71",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1KJHnQzDOi9nfZEbQJ7NA9_mr8Xa-IZER/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/18GTPlwvelfMqcrvNd2mcl8bIFwtXkMhr/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1VisoILJKwbIwHE6pY6fNI-VOUyZoZ5x6/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1wNUdlHgWlBcb7cobVJIJU4Sl2iZqRShi/view?usp=drive_link",
+        "DESCRICAO": "VÁLVULA HIDRAULICA APRESENTOU UM VAZAMENTO - FOI NECESSARIA A TROCA DA ROSCA E SOLDA ELÉTRICA",
+        "CUSTO": 240
+    },
+    {
+        "MES": "SETEMBRO",
+        "SEMANA": "3",
+        "PLACA": "PHV-1J15",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1eEKhzzfwFWT0mAK6Oqma_6B6d9_icUl5/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/1rfVpqvRDP8C9fst9PiAZZgG6UmzTmKfC/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1Qk9uguIZZR9R_WMGmi1KoXuSSIM4_JYg/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1ZB6cUFxgkQSz5cFNLwaICRZYrkT7Fxnw/view?usp=drive_link",
+        "DESCRICAO": "VÁLVULA HIDRAULICA DO CILINDRO DA INCLINAÇÃO APRESENTOU UM VAZAMENTO, FOI FEITO A TROCA DO REPARO",
+        "CUSTO": 220 
+    },  
+    {
+        "MES": "SETEMBRO",
+        "SEMANA": "3",
+        "PLACA": "QZB-6E32",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1C-C7rWVP7optVQUwgGf_ncI8yMuJBn3h/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/11NZOO9gduLD3i-S3eNG0mP05zP4ChxU3/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1WIX9aXO3NWdO2oNZhDI6-9_Z20_Km2d7/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/13DvxOHrxN7NbHZWwpvjRusRqQOEBipZ3/view?usp=drive_link",
+        "DESCRICAO": "VEÍCULO APRESENTOU VARIAS RACHADURAS NA LANÇA E NO TRADO, NECESSITOU FAZER DIVERSAS SOLDAS NOS EQUIPAMENTOS",
+        "CUSTO": 1049.85 
+    },
+    {
+        "MES": "SETEMBRO",
+        "SEMANA": "3",
+        "PLACA": "PHV-1J35",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1QDPggmHpywLnmQy-Uusg96DaZZMVhJP_/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/1PNi9KV_UAxi1iDAwdwXgOWUFnXOh2GrZ/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1erhPrHQ4jd3L4bd-o92eMF6bCjDMH1G-/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1XLyqBiUvgzNILnMZeStShaPiY66hkdG_/view?usp=drive_link",
+        "DESCRICAO": "VEÍCULO APRESENTOU DESGASTE NA BARRA DE DIREÇÃO. FOI NECESSÁRIO A TROCA DA BARRA DE DIREÇÃO E DO TERMINAL",
+        "CUSTO": 1806.06
+    },
+    {
+        "MES": "SETEMBRO",
+        "SEMANA": "3",
+        "PLACA": "QZJ-5F26",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1WbtdLSJlw49_yA3fgRRhU783gniN7LGa/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/1CkJQsqJ8m4GLMZY0wfMYvLyNQrLc6GxX/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1vSPKFkLvxlaVVjIx4sZz8JS2CR-HPfM1/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1jEU16NavX_-CkPunvYlP3uGuTwViqSG2/view?usp=drive_link",
+        "DESCRICAO": "CONFORME ALINHADO COM O SETOR O VEÍCULO APRESENTOU DIVERSAS AVARIAS NOS QUATRO PNEUS, FOI FEITO A TROCA DOS 4 + ALINHAMENTO E BALANCEAMENTO",
+        "CUSTO": 1461.56
+    }       
+   
+]
