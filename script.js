@@ -72,7 +72,7 @@ function loadData() {
   const loadingIndicator = document.getElementById("loadingIndicator");
 
   // Carregar o arquivo bd.json que está no mesmo diretório
-  fetch("/dados/bd.json")
+  fetch("dados/bd.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(
@@ -543,7 +543,7 @@ function converterLinkGoogleDrive(link) {
 
 // Função para carregar fotos
 function carregarFotosVeiculos() {
-  fetch("/dados/fotos.json")
+  fetch("dados/fotos.json")
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao carregar fotos.json");
       return response.json();
@@ -699,7 +699,7 @@ function calcularDiasOficina(dataEntrada) {
 // Função para carregar dados do status.json
 async function carregarDadosFrota() {
   try {
-    const response = await fetch("/dados/status.json");
+    const response = await fetch("dados/status.json");
     const data = await response.json();
     exibirDadosFrota(data);
   } catch (error) {
@@ -1490,7 +1490,7 @@ window.manutencaoData = [];
 
 // Função para carregar dados de manutenção
 function carregarManutencaoData() {
-  fetch("/dados/manutencao.json")
+  fetch("dados/manutencao.json")
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao carregar manutencao.json");
       return response.json();
