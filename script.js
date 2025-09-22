@@ -72,7 +72,7 @@ function loadData() {
   const loadingIndicator = document.getElementById("loadingIndicator");
 
   // Carregar o arquivo bd.json que está no mesmo diretório
-  fetch("/dados/bd.json")
+  fetch("dados/bd.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(
