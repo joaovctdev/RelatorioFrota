@@ -2719,24 +2719,6 @@
     "N": "Semana 3",
     "O": "setembro"
   },
-  
- {
-   "A": "Data",
-   "B": "Placa do veículo",
-   "C": "Porte",
-   "D": "Distância percorrida (Km)",
-   "E": "Tempo total dirigido (min)",
-   "F": "Tempo de motor ocioso (min)",
-   "G": "Tempo total de motor ligado (min)",
-   "H": "Total de paradas",
-   "I": "Tempo total de paradas (min)",
-   "J": "Tempo médio de cada parada (min)",
-   "K": "Horário do primeiro trajeto detectado",
-   "L": "Horário da última parada detectada",
-   "M": "Observações",
-   "N": "Observações",
-   "O": "Observações"
- },
  {
    "A": "20/09/2025",
    "B": "PHQ1D82",
