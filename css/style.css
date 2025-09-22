@@ -29,7 +29,7 @@ body {
 .header {
   height: 70vh;
   background-image: linear-gradient(rgb(0 0 0 / 38%), rgb(0 0 0 / 39%)),
-    url(/LOGOS/CARRETA.jpeg);
+    url(../LOGOS/CARRETA.jpeg);
   background-size: cover;
   background-position: bottom center;
   color: white;
