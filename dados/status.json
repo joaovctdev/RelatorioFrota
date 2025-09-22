@@ -23,12 +23,10 @@
         "MOTORISTA": "OCIOSO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "",
-        "LOCAL": "TOP CAR",
+        "LOCAL": "BASE IRECÊ",
         "OBRA": "BASE IRECE",
-        "STATUS": "EM OFICINA",
-        "DIAS_OFICINA": 1,
-        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NO ACELERADOR",
-        "DATA_ENTRADA": "2025-09-11"
+        "STATUS": "OCIOSO"
+        
        
     },
     {
