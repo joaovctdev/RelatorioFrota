@@ -23,9 +23,12 @@
         "MOTORISTA": "OCIOSO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "",
-        "LOCAL": "BASE IRECÊ",
+        "LOCAL": "TOP CAR",
         "OBRA": "BASE IRECE",
-        "STATUS": "OCIOSO"
+        "STATUS": "EM OFICINA",
+        "DIAS_OFICINA": 1,
+        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NO ACELERADOR",
+        "DATA_ENTRADA": "2025-09-11"
        
     },
     {
@@ -38,7 +41,7 @@
         "OBRA": "AV DIESEL",
         "STATUS": "EM OFICINA",
         "DIAS_OFICINA": 8,
-        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NO ACELERADOR",
+        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NA BOMBA DE COMBUSTÃO",
         "DATA_ENTRADA": "2025-09-11"
     },
     {
@@ -110,11 +113,9 @@
         "MOTORISTA": "ÉRCULES FRANCISCO",
         "ENCARREGADO": "ALAN NUNES",
         "SUPERVISOR": "DJALMA",
-        "LOCAL": "HIDRAULICA AMORIM",
-        "STATUS": "EM OFICINA",
-        "DIAS_OFICINA": 2,
-        "DESCRICAO": "EQUIPAMENTO APRESENTOU FALHA NA VÁLVULA HIDARAULICA",
-        "DATA_ENTRADA": "2025-09-11"
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "EM OPERAÇÃO"
+        
     },
     {
         "PLACA": "QZL-7E78",
@@ -264,11 +265,14 @@
     {
         "PLACA": "TAH-0I27",
         "FUNCAO": "SUPERVISÃO",
-        "MOTORISTA": "VAGNO NOVAIS",
+        "MOTORISTA": "DJALMA RIOS",
         "ENCARREGADO": "MÁRCIO FROTA",
-        "SUPERVISOR": "ELOY",
-        "LOCAL": "LAGOA DO BOI",
-        "STATUS": "EM OPERAÇÃO"
+        "SUPERVISOR": "",
+        "LOCAL": "TOPAZIO TOYOTA",
+        "STATUS": "EM OFICINA",
+        "DIAS_OFICINA":1,
+        "DESCRICAO": "REVISÃO PREVENTIVA NA CONCESSIONÁRIA",
+        "DATA_ENTRADA": "2025-09-11"
     },
     {
         "PLACA": "QZJ-5F26",
