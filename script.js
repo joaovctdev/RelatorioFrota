@@ -629,11 +629,11 @@ function popularFiltrosFotos() {
       semanaFilter.innerHTML += `<option value="${semana}">Semana ${semana}</option>`;
     });
 
-  // Definir valores padrão
+  // Definir valores padrão do relatorio fotografico
   mesFilter.value = "8"; // Setembro é o mês 8 (0-indexed)
   frotaFilter.value = "Todas as frotas"; // Valor padrão para frota
   if (semanas.includes(1)) {
-    semanaFilter.value = "3";
+    semanaFilter.value = "4";
   }
 
   console.log("Filtros populados:", {
