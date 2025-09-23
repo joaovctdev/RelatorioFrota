@@ -138,7 +138,7 @@ body {
 }
 
 .container {
-  max-width: 1550px;
+  max-width: 1529px;
   margin: 0 auto;
   padding: 40px 20px;
 }
@@ -330,6 +330,8 @@ input {
   background-color: var(--filter-bg);
   padding: 15px;
   border-radius: 8px;
+  MAX-WIDTH: 1411px;
+  margin-left: 21px;
 }
 
 .search-box {
