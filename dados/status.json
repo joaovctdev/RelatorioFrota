@@ -35,12 +35,9 @@
         "MOTORISTA": "OCIOSO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "",
-        "LOCAL": "OFICINA",
-        "OBRA": "AV DIESEL",
-        "STATUS": "EM OFICINA",
-        "DIAS_OFICINA": 8,
-        "DESCRICAO": "VEÍCULO APRESENTOU FALHA NA BOMBA DE COMBUSTÃO",
-        "DATA_ENTRADA": "2025-09-11"
+        "LOCAL": "BASE IRECÊ",
+        "OBRA": "BASE IRECE",
+        "STATUS": "OCIOSO"
     },
     {
         "PLACA": "PHV-1J35",
@@ -99,14 +96,11 @@
     {
         "PLACA": "QZC-9J71",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "SÉRGIO DE SOUZA",
+        "MOTORISTA": "OCIOSO",
         "ENCARREGADO": "ESMERALDO",
         "SUPERVISOR": "RENATO",
-        "LOCAL": "OFICINA TETRA CHASSI",
-        "STATUS": "EM OFICINA",
-        "DIAS_OFICINA": 1,
-        "DESCRICAO": "VEÍCULO APRESENTOU DIVERSOS VAZAMENTOS",
-        "DATA_ENTRADA": "2025-09-11"
+        "LOCAL": "BASE IRECÊ"   ,
+        "STATUS": "OCIOSO"
     },
     {
         "PLACA": "QZB-6E32",
@@ -184,16 +178,16 @@
     {
         "PLACA": "TSC-3G04",
         "FUNCAO": "CARGA / DESCARGA",
-        "MOTORISTA": "EDER DOURADO",
+        "MOTORISTA": "ROBÉRIO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "CLEONE",
-        "LOCAL": "BASE IRECÊ",
-        "STATUS": "OCIOSO"
+        "LOCAL": "XIQUE-XIQUE",
+        "STATUS": "EM OPERAÇÃO"
     },
     {
         "PLACA": "QZZ-8F36",
         "FUNCAO": "CARGA / DESCARGA",
-        "MOTORISTA": "RÓBERIO RIBEIRO",
+        "MOTORISTA": "OCIOSO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "CLEONE",
         "LOCAL": "BASE IRECÊ",
@@ -269,11 +263,8 @@
         "MOTORISTA": "DJALMA RIOS",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "",
-        "LOCAL": "TOPAZIO TOYOTA",
-        "STATUS": "EM OFICINA",
-        "DIAS_OFICINA":1,
-        "DESCRICAO": "REVISÃO PREVENTIVA NA CONCESSIONÁRIA",
-        "DATA_ENTRADA": "2025-09-11"
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "EM OPERAÇÃO"
     },
     {
         "PLACA": "QZJ-5F26",
