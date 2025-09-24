@@ -588,56 +588,113 @@ function scrollToSection(sectionId) {
 }
 // Dados de exemplo com informações de oficina
 /************************************************ INICIO RELATORIO STATUS ***********************************************/
-// Função para calcular dias na oficina
-function calcularDiasOficina(dataEntrada) {
+// Função para converter data do formato brasileiro (dd/mm/aaaa) para Date
+function converterData(dataString) {
+  if (!dataString) return null;
+  
+  try {
+    const partes = dataString.split('/');
+    if (partes.length !== 3) return null;
+    
+    const dia = parseInt(partes[0]);
+    const mes = parseInt(partes[1]) - 1; // Mês é 0-indexed no JavaScript
+    const ano = parseInt(partes[2]);
+    
+    // Validar se os valores são números válidos
+    if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return null;
+    
+    // Validar ranges
+    if (dia < 1 || dia > 31) return null;
+    if (mes < 0 || mes > 11) return null;
+    if (ano < 2000 || ano > 2100) return null;
+    
+    return new Date(ano, mes, dia);
+  } catch (error) {
+    console.error('Erro ao converter data:', dataString, error);
+    return null;
+  }
+}
+
+// Função para calcular dias na oficina baseado na DATA ENTRADA
+function calcularDiasOficina(dataEntradaString) {
+  if (!dataEntradaString) return 0;
+
+  const dataEntrada = converterData(dataEntradaString);
   if (!dataEntrada) return 0;
 
-  const entrada = new Date(dataEntrada);
   const hoje = new Date();
-  const diffTime = Math.abs(hoje - entrada);
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  // Resetar horas para evitar problemas de timezone
+  const hojeReset = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const entradaReset = new Date(dataEntrada.getFullYear(), dataEntrada.getMonth(), dataEntrada.getDate());
+  
+  const diffTime = Math.abs(hojeReset - entradaReset);
+  const diffDias = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  return diffDias;
 }
 
 // Função para carregar dados do status.json
 async function carregarDadosFrota() {
   try {
     const response = await fetch("dados/status.json");
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
     const data = await response.json();
     exibirDadosFrota(data);
   } catch (error) {
     console.error("Erro ao carregar dados:", error);
     document.getElementById("frota-table-body").innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; color: #e74c3c; padding: 20px;">
-                            <i class="fas fa-exclamation-triangle"></i> Erro ao carregar os dados da frota.
-                        </td>
-                    </tr>
-                `;
+      <tr>
+        <td colspan="7" style="text-align: center; color: #e74c3c; padding: 20px;">
+          <i class="fas fa-exclamation-triangle"></i> Erro ao carregar os dados da frota: ${error.message}
+        </td>
+      </tr>
+    `;
   }
 }
 
 // Função para exibir os dados na tabela
 function exibirDadosFrota(data) {
   const tableBody = document.getElementById("frota-table-body");
+  if (!tableBody) {
+    console.error('Elemento frota-table-body não encontrado');
+    return;
+  }
+  
   tableBody.innerHTML = "";
+
+  // Verificar se há dados
+  if (!data || data.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; color: #666; padding: 20px;">
+          <i class="fas fa-info-circle"></i> Nenhum dado disponível
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   data.forEach((veiculo, index) => {
     // Determinar a classe de status
     let statusClass = "";
     let statusText = "";
+    const status = veiculo.STATUS || veiculo.status || "";
 
-    if (veiculo.STATUS.includes("OPERAÇÃO")) {
+    if (status.includes("OPERAÇÃO") || status.includes("OPERAÇAO") || status.includes("OPERACAO")) {
       statusClass = "status-operacao";
       statusText = "EM OPERAÇÃO";
-    } else if (veiculo.STATUS.includes("OCIOSO")) {
+    } else if (status.includes("OCIOSO")) {
       statusClass = "status-ocioso";
       statusText = "OCIOSO";
-    } else if (veiculo.STATUS.includes("OFICINA")) {
+    } else if (status.includes("OFICINA")) {
       statusClass = "status-oficina";
       statusText = "NA OFICINA";
     } else {
       statusClass = "status-ocioso";
-      statusText = veiculo.STATUS;
+      statusText = status || "STATUS INDEFINIDO";
     }
 
     // Criar linha principal
@@ -646,53 +703,60 @@ function exibirDadosFrota(data) {
     row.dataset.index = index;
 
     row.innerHTML = `
-                    <td class="status-text">
-                        <span class="status-indicator ${statusClass}"></span>
-                        ${statusText}
-                    </td>
-                    <td>${veiculo.PLACA}</td>
-                    <td>${veiculo.FUNCAO}</td>
-                    <td>${veiculo.MOTORISTA}</td>
-                    <td>${veiculo.ENCARREGADO}</td>
-                    <td>${veiculo.SUPERVISOR}</td>
-                    <td>${veiculo.LOCAL}</td>
-                    
-                `;
+      <td class="status-text">
+        <span class="status-indicator ${statusClass}"></span>
+        ${statusText}
+      </td>
+      <td>${veiculo.PLACA || veiculo.placa || "N/A"}</td>
+      <td>${veiculo.FUNCAO || veiculo.funcao || "N/A"}</td>
+      <td>${veiculo.MOTORISTA || veiculo.motorista || "N/A"}</td>
+      <td>${veiculo.ENCARREGADO || veiculo.encarregado || "N/A"}</td>
+      <td>${veiculo.SUPERVISOR || veiculo.supervisor || "N/A"}</td>
+      <td>${veiculo.LOCAL || veiculo.local || "N/A"}</td>
+    `;
 
     tableBody.appendChild(row);
 
     // Adicionar linha de detalhes para veículos na oficina
-    if (veiculo.STATUS.includes("OFICINA")) {
-      const diasOficina =
-        veiculo.DIAS_OFICINA || calcularDiasOficina(veiculo.DATA_ENTRADA);
+    if (status.includes("OFICINA")) {
+      const dataEntrada = veiculo["DATA ENTRADA"] || veiculo["DATA_ENTRADA"] || veiculo.data_entrada;
+      const diasOficina = calcularDiasOficina(dataEntrada);
+      const descricao = veiculo.DESCRICAO || veiculo.descricao || "Sem descrição detalhada";
 
       const detailsRow = document.createElement("tr");
       detailsRow.classList.add("oficina-details");
       detailsRow.dataset.parentIndex = index;
 
-      detailsRow.innerHTML = `
-                        <td colspan="7">
-                            <div class="details-content">
-                                <div class="detail-item">
-                                    <h4>Descrição do Problema</h4>
-                                    <p>${veiculo.DESCRICAO ||
-        "Sem descrição detalhada"
-        }</p>
-                                </div>
-                                <div class="detail-item">
-                                    <h4>Tempo na Oficina</h4>
-                                    <p>Veículo está na oficina há <span class="dias-count">${diasOficina} dias</span></p>
-                                    ${veiculo.DATA_ENTRADA
-          ? `<p>Desde: ${new Date(
-            veiculo.DATA_ENTRADA
-          ).toLocaleDateString("pt-BR")}</p>`
-          : ""
+      // Formatar data de entrada para exibição
+      let dataFormatada = "Data não informada";
+      if (dataEntrada) {
+        const dataObj = converterData(dataEntrada);
+        if (dataObj) {
+          dataFormatada = dataObj.toLocaleDateString("pt-BR");
         }
-                                </div>
-                                
-                            </div>
-                        </td>
-                    `;
+      }
+
+      detailsRow.innerHTML = `
+        <td colspan="7">
+          <div class="details-content">
+            <div class="detail-item">
+              <h4>Descrição do Problema</h4>
+              <p>${descricao}</p>
+            </div>
+            <div class="detail-item">
+              <h4>Tempo na Oficina</h4>
+              <p>Veículo está na oficina há <span class="dias-count ${diasOficina > 30 ? 'dias-alerta' : ''}">${diasOficina} dias</span></p>
+              <p>Desde: ${dataFormatada}</p>
+            </div>
+            ${veiculo.PREVISAO ? `
+            <div class="detail-item">
+              <h4>Previsão de Saída</h4>
+              <p>${veiculo.PREVISAO}</p>
+            </div>
+            ` : ''}
+          </div>
+        </td>
+      `;
 
       tableBody.appendChild(detailsRow);
     }
@@ -708,60 +772,93 @@ function exibirDadosFrota(data) {
 
       if (detailsRow) {
         // Fechar outros detalhes abertos
-        document
-          .querySelectorAll(".oficina-details.active")
-          .forEach((detail) => {
-            if (detail !== detailsRow) {
-              detail.classList.remove("active");
-            }
-          });
+        document.querySelectorAll(".oficina-details.active").forEach((detail) => {
+          if (detail !== detailsRow) {
+            detail.classList.remove("active");
+            detail.previousElementSibling.classList.remove("row-selected");
+          }
+        });
 
         // Alternar visibilidade dos detalhes
         detailsRow.classList.toggle("active");
+        this.classList.toggle("row-selected");
       }
+    });
+  });
+
+  // Inicializar filtros após carregar os dados
+  inicializarFiltros();
+}
+
+// Função para inicializar os filtros
+function inicializarFiltros() {
+  const searchInput = document.getElementById("search-input");
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  
+  if (searchInput) {
+    searchInput.addEventListener("input", filtrarTabela);
+  }
+  
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      // Remover classe active de todos os botões
+      filterBtns.forEach(b => b.classList.remove("active"));
+      // Adicionar classe active ao botão clicado
+      this.classList.add("active");
+      filtrarTabela();
     });
   });
 }
 
 // Função para filtrar a tabela
 function filtrarTabela() {
-  const searchText = document
-    .getElementById("search-input")
-    .value.toLowerCase();
-  const statusFilter =
-    document.querySelector(".filter-btn.active")?.dataset.status || "all";
+  const searchInput = document.getElementById("search-input");
+  const activeFilter = document.querySelector(".filter-btn.active");
+  
+  if (!searchInput) return;
+  
+  const searchText = searchInput.value.toLowerCase();
+  const statusFilter = activeFilter?.dataset.status || "all";
   const rows = document.querySelectorAll(".veiculo-row");
   const detailsRows = document.querySelectorAll(".oficina-details");
 
+  let resultadosVisiveis = 0;
+
   rows.forEach((row) => {
     const cells = row.querySelectorAll("td");
+    if (cells.length < 7) return;
+
     const statusCell = cells[0].textContent.toLowerCase();
     const placaCell = cells[1].textContent.toLowerCase();
-    const motoristaCell = cells[2].textContent.toLowerCase();
-    const localCell = cells[5].textContent.toLowerCase();
+    const funcaoCell = cells[2].textContent.toLowerCase();
+    const motoristaCell = cells[3].textContent.toLowerCase();
+    const encarregadoCell = cells[4].textContent.toLowerCase();
+    const supervisorCell = cells[5].textContent.toLowerCase();
+    const localCell = cells[6].textContent.toLowerCase();
 
     let shouldShow = true;
 
     // Aplicar filtro de status
     if (statusFilter !== "all") {
-      if (statusFilter === "operacao" && !statusCell.includes("operação"))
+      if (statusFilter === "operacao" && !statusCell.includes("operação") && !statusCell.includes("operacao")) 
         shouldShow = false;
-      if (statusFilter === "ocioso" && !statusCell.includes("ocioso"))
+      if (statusFilter === "ocioso" && !statusCell.includes("ocioso")) 
         shouldShow = false;
-      if (statusFilter === "oficina" && !statusCell.includes("oficina"))
+      if (statusFilter === "oficina" && !statusCell.includes("oficina")) 
         shouldShow = false;
     }
 
     // Aplicar filtro de texto
-    if (
-      searchText &&
-      !(
+    if (searchText) {
+      const match = 
         placaCell.includes(searchText) ||
+        funcaoCell.includes(searchText) ||
         motoristaCell.includes(searchText) ||
-        localCell.includes(searchText)
-      )
-    ) {
-      shouldShow = false;
+        encarregadoCell.includes(searchText) ||
+        supervisorCell.includes(searchText) ||
+        localCell.includes(searchText);
+      
+      if (!match) shouldShow = false;
     }
 
     row.style.display = shouldShow ? "" : "none";
@@ -771,14 +868,66 @@ function filtrarTabela() {
     const detailsRow = document.querySelector(
       `.oficina-details[data-parent-index="${index}"]`
     );
+    
     if (detailsRow) {
       detailsRow.style.display = shouldShow ? "" : "none";
       if (!shouldShow) {
         detailsRow.classList.remove("active");
+        row.classList.remove("row-selected");
       }
     }
+
+    if (shouldShow) resultadosVisiveis++;
   });
+
+  // Mostrar mensagem se não houver resultados
+  const mensagemSemResultados = document.getElementById('mensagem-sem-resultados');
+  if (!mensagemSemResultados && resultadosVisiveis === 0 && rows.length > 0) {
+    const tr = document.createElement('tr');
+    tr.id = 'mensagem-sem-resultados';
+    tr.innerHTML = `<td colspan="7" style="text-align: center; color: #666; padding: 20px;">
+      <i class="fas fa-search"></i> Nenhum veículo encontrado com os filtros aplicados
+    </td>`;
+    tableBody.appendChild(tr);
+  } else if (mensagemSemResultados) {
+    mensagemSemResultados.style.display = resultadosVisiveis === 0 ? '' : 'none';
+  }
 }
+
+// Função para atualizar os dias na oficina periodicamente (opcional)
+function iniciarAtualizacaoAutomatica() {
+  // Atualizar a contagem de dias a cada hora
+  setInterval(() => {
+    const diasElements = document.querySelectorAll('.dias-count');
+    diasElements.forEach(element => {
+      const parentRow = element.closest('.oficina-details');
+      if (parentRow) {
+        const dataEntrada = parentRow.querySelector('p:last-child')?.textContent;
+        if (dataEntrada && dataEntrada.includes('Desde:')) {
+          const dataString = dataEntrada.split('Desde: ')[1];
+          if (dataString) {
+            const novosDias = calcularDiasOficina(dataString);
+            element.textContent = `${novosDias} dias`;
+            
+            // Atualizar classe de alerta se necessário
+            if (novosDias > 30) {
+              element.classList.add('dias-alerta');
+            } else {
+              element.classList.remove('dias-alerta');
+            }
+          }
+        }
+      }
+    });
+  }, 3600000); // A cada hora
+}
+
+// Carregar dados quando a página estiver pronta
+document.addEventListener('DOMContentLoaded', function() {
+  carregarDadosFrota();
+  iniciarAtualizacaoAutomatica();
+});
+
 /****************************************************** FIM RELATÓRIO STATUS *******************************************/
 //******************** SEÇÃO DO RASTREAMENTO ****************** //
 // Variáveis globais

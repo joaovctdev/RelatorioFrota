@@ -310,6 +310,18 @@
         "SUPERVISOR": "",
         "LOCAL": "MORRO DE CHAPÉU",
         "STATUS": "EM OPERAÇÃO"
+    },
+    {
+        "PLACA": "TESTE-123",
+        "FUNCAO": "FROTA",
+        "MOTORISTA": "MÁRCIO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "OFICINA",
+        "STATUS": "OFICINA",
+        "DESCRICAO": "VEÍCULO TESTE NA OFICINA POR MOTIVO X",
+        "DIAS OFICINA": 10,
+        "DATA ENTRADA": "14/09/2025"
     }
    
 
