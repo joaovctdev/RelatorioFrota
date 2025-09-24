@@ -221,6 +221,15 @@
         "STATUS": "EM OPERAÇÃO"
     },
     {
+        "PLACA": "RET-0003",
+        "FUNCAO": "ESCAVAÇÃO",
+        "MOTORISTA": "VAGNO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "ELOY",
+        "LOCAL": "MATA VERDE",
+        "STATUS": "EM OPERAÇÃO"
+    },
+    {
         "PLACA": "QZT-2J09",
         "FUNCAO": "SUPERVISÃO",
         "MOTORISTA": "RENATO ALVES",
