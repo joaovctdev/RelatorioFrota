@@ -12,72 +12,30 @@ window.addEventListener("scroll", () => {
   lastScrollY = window.scrollY;
 });
 
-// Variável global para armazenar os dados
+
+/*********************************************  TABELA FINANCEIRO ********************************************************/
+// Variáveis globais
 let allData = [];
 
-// Função para obter todas as semanas de 2025 (domingo a domingo)
-function getWeeksOf2025() {
-  const weeks = [];
-  let currentDate = new Date(2024, 11, 28); // Primeiro domingo de 2025 (28/12/2024)
 
-  while (currentDate.getFullYear() <= 2025) {
-    if (
-      currentDate.getFullYear() === 2025 ||
-      (currentDate.getFullYear() === 2024 && currentDate.getMonth() === 11)
-    ) {
-      const weekStart = new Date(currentDate);
-      const weekEnd = new Date(currentDate);
-      weekEnd.setDate(weekEnd.getDate() + 6);
 
-      // Formatar datas no formato brasileiro
-      const formatDate = (date) => {
-        return date.toLocaleDateString("pt-BR");
-      };
 
-      weeks.push({
-        number: weeks.length + 1,
-        start: weekStart,
-        end: weekEnd,
-        label: `Semana ${weeks.length + 1} (${formatDate(
-          weekStart
-        )} a ${formatDate(weekEnd)})`,
-      });
-    }
 
-    // Próximo domingo
-    currentDate.setDate(currentDate.getDate() + 7);
-
-    // Parar após a última semana de 2025
-    if (
-      currentDate.getFullYear() === 2026 &&
-      currentDate.getMonth() === 0 &&
-      currentDate.getDate() > 4
-    ) {
-      break;
-    }
-  }
-
-  return weeks;
-}
-
-// Função para obter a semana do ano de uma data
-function getWeekOfYear(date) {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
-  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-}
 
 // Função para carregar dados do arquivo JSON
 function loadData() {
   const loadingIndicator = document.getElementById("loadingIndicator");
+  const dataTable = document.getElementById("dataTable");
+
+  // Mostrar loading
+  if (loadingIndicator) loadingIndicator.style.display = "block";
+  if (dataTable) dataTable.style.display = "none";
 
   // Carregar o arquivo bd.json que está no mesmo diretório
   fetch("dados/bd.json")
     .then((response) => {
       if (!response.ok) {
-        throw new Error(
-          "Arquivo bd.json não encontrado. Usando dados de exemplo."
-        );
+        throw new Error("Arquivo bd.json não encontrado.");
       }
       return response.json();
     })
@@ -100,17 +58,17 @@ function loadData() {
     .catch((error) => {
       console.error("Erro ao carregar dados:", error);
       // Usar dados de exemplo como fallback
-      allData = sampleData;
+      allData = getSampleData();
       populateFilters(allData);
       processData();
     });
 }
 
+
 // Popular os filtros com os dados
 function populateFilters(data) {
   const placaFilter = document.getElementById("placaFilter");
   const monthFilter = document.getElementById("monthFilter");
-  const weekFilter = document.getElementById("weekFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
 
   // Limpar e popular filtro de placas
@@ -134,57 +92,31 @@ function populateFilters(data) {
   if (monthFilter) {
     monthFilter.innerHTML = '<option value="all">Todos os meses</option>';
     const meses = [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
+      {value: 0, nome: "Janeiro"},
+      {value: 1, nome: "Fevereiro"},
+      {value: 2, nome: "Março"},
+      {value: 3, nome: "Abril"},
+      {value: 4, nome: "Maio"},
+      {value: 5, nome: "Junho"},
+      {value: 6, nome: "Julho"},
+      {value: 7, nome: "Agosto"},
+      {value: 8, nome: "Setembro"},
+      {value: 9, nome: "Outubro"},
+      {value: 10, nome: "Novembro"},
+      {value: 11, nome: "Dezembro"}
     ];
 
-    meses.forEach((mes, index) => {
+    meses.forEach((mes) => {
       const option = document.createElement("option");
-      option.value = index;
-      option.textContent = mes;
+      option.value = mes.value;
+      option.textContent = mes.nome;
       monthFilter.appendChild(option);
-    });
-  }
-
-  // Configurar filtro de semanas de 2025
-  if (weekFilter) {
-    weekFilter.innerHTML = '<option value="all">Todas as semanas</option>';
-    const weeks2025 = getWeeksOf2025();
-    const semanasComDados = new Set();
-
-    // Encontrar semanas que têm dados
-    data.forEach((item) => {
-      const dataObj = parseDate(item.B || "");
-      if (dataObj) {
-        const semana = getWeekOfYear(dataObj);
-        semanasComDados.add(semana);
-      }
-    });
-
-    weeks2025.forEach((week) => {
-      if (semanasComDados.has(week.number)) {
-        const option = document.createElement("option");
-        option.value = week.number;
-        option.textContent = week.label;
-        weekFilter.appendChild(option);
-      }
     });
   }
 
   // Configurar filtro de tipos de manutenção
   if (manutencaoFilter) {
-    manutencaoFilter.innerHTML =
-      '<option value="all">Todos os tipos</option>';
+    manutencaoFilter.innerHTML = '<option value="all">Todos os tipos</option>';
     const manutencoes = new Set();
 
     data.forEach((item) => {
@@ -203,18 +135,37 @@ function populateFilters(data) {
 // Converter data do formato brasileiro para objeto Date
 function parseDate(dateString) {
   if (!dateString) return null;
-  const parts = dateString.split("/");
-  if (parts.length !== 3) return null;
-  return new Date(parts[2], parts[1] - 1, parts[0]);
+  try {
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return null;
+    const day = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1;
+    const year = parseInt(parts[2]);
+    
+    // Validar se a data é válida
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+    if (day < 1 || day > 31) return null;
+    if (month < 0 || month > 11) return null;
+    if (year < 2000 || year > 2100) return null;
+    
+    return new Date(year, month, day);
+  } catch (error) {
+    console.error("Erro ao parsear data:", dateString, error);
+    return null;
+  }
 }
 
 // Formatar valor monetário
 function formatCurrency(value) {
+  const numValue = typeof value === 'number' ? value : parseFloat(
+    value.toString().replace("R$ ", "").replace(/\./g, "").replace(",", ".")
+  );
+  
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
     minimumFractionDigits: 2,
-  }).format(value);
+  }).format(isNaN(numValue) ? 0 : numValue);
 }
 
 // Função para obter dados filtrados com base nos filtros atuais
@@ -222,8 +173,7 @@ function getFilteredData() {
   const mesFiltro = document.getElementById("monthFilter")?.value || "all";
   const semanaFiltro = document.getElementById("weekFilter")?.value || "all";
   const placaFiltro = document.getElementById("placaFilter")?.value || "all";
-  const manutencaoFiltro =
-    document.getElementById("manutencaoFilter")?.value || "all";
+  const manutencaoFiltro = document.getElementById("manutencaoFilter")?.value || "all";
 
   return allData.filter((item) => {
     // Extrair valores
@@ -235,126 +185,22 @@ function getFilteredData() {
     if (placaFiltro !== "all" && placa !== placaFiltro) return false;
 
     // Aplicar filtro de manutenção
-    if (manutencaoFiltro !== "all" && manutencao !== manutencaoFiltro)
-      return false;
+    if (manutencaoFiltro !== "all" && manutencao !== manutencaoFiltro) return false;
 
     const dataObj = parseDate(dataEmissao);
-    if (dataObj) {
-      // Filtrar por mês
-      if (mesFiltro !== "all" && dataObj.getMonth() != mesFiltro)
-        return false;
-
-      // Filtrar por semana do ano
-      if (semanaFiltro !== "all") {
-        const semana = getWeekOfYear(dataObj);
-        if (semana != semanaFiltro) return false;
-      }
-    } else {
-      // Se não conseguir parsear a data, pular item se há filtro de semana
-      if (semanaFiltro !== "all") return false;
+    
+    // Filtrar por mês
+    if (mesFiltro !== "all") {
+      if (!dataObj) return false; // Se não tem data, não passa no filtro de mês
+      if (parseInt(mesFiltro) !== dataObj.getMonth()) return false;
     }
+
+  
 
     return true;
   });
 }
 
-// Atualizar os filtros com base nos dados disponíveis
-function updateFilterOptions() {
-  const filteredData = getFilteredData();
-  const placaFilter = document.getElementById("placaFilter");
-  const weekFilter = document.getElementById("weekFilter");
-  const monthFilter = document.getElementById("monthFilter");
-  const manutencaoFilter = document.getElementById("manutencaoFilter");
-
-  const mesSelecionado = monthFilter?.value || "all";
-  const semanaSelecionada = weekFilter?.value || "all";
-  const placaSelecionada = placaFilter?.value || "all";
-  const manutencaoSelecionada = manutencaoFilter?.value || "all";
-
-  // Atualizar filtro de placas
-  if (placaFilter) {
-    const placas = new Set();
-
-    filteredData.forEach((item) => {
-      if (item.D && item.D.trim() !== "") placas.add(item.D);
-    });
-
-    placaFilter.innerHTML = '<option value="all">Todas as placas</option>';
-    placas.forEach((placa) => {
-      const option = document.createElement("option");
-      option.value = placa;
-      option.textContent = placa;
-      placaFilter.appendChild(option);
-    });
-
-    // Manter a seleção anterior se ainda estiver disponível
-    if (placaSelecionada !== "all" && placas.has(placaSelecionada)) {
-      placaFilter.value = placaSelecionada;
-    }
-  }
-
-  // Atualizar filtro de semanas
-  if (weekFilter) {
-    const semanas = new Set();
-
-    filteredData.forEach((item) => {
-      const dataObj = parseDate(item.B || "");
-      if (dataObj) {
-        const semana = getWeekOfYear(dataObj);
-        semanas.add(semana);
-      }
-    });
-
-    weekFilter.innerHTML = '<option value="all">Todas as semanas</option>';
-
-    // Obter todas as semanas de 2025 para referência
-    const todasSemanas = getWeeksOf2025();
-
-    // Adicionar apenas as semanas que existem nos dados filtrados
-    todasSemanas.forEach((week) => {
-      if (semanas.has(week.number)) {
-        const option = document.createElement("option");
-        option.value = week.number;
-        option.textContent = week.label;
-        weekFilter.appendChild(option);
-      }
-    });
-
-    // Manter a seleção anterior se ainda estiver disponível
-    if (
-      semanaSelecionada !== "all" &&
-      semanas.has(parseInt(semanaSelecionada))
-    ) {
-      weekFilter.value = semanaSelecionada;
-    }
-  }
-
-  // Atualizar filtro de manutenções
-  if (manutencaoFilter) {
-    const manutencoes = new Set();
-
-    filteredData.forEach((item) => {
-      if (item.F && item.F.trim() !== "") manutencoes.add(item.F);
-    });
-
-    manutencaoFilter.innerHTML =
-      '<option value="all">Todos os tipos</option>';
-    manutencoes.forEach((manutencao) => {
-      const option = document.createElement("option");
-      option.value = manutencao;
-      option.textContent = manutencao;
-      manutencaoFilter.appendChild(option);
-    });
-
-    // Manter a seleção anterior se ainda estiver disponível
-    if (
-      manutencaoSelecionada !== "all" &&
-      manutencoes.has(manutencaoSelecionada)
-    ) {
-      manutencaoFilter.value = manutencaoSelecionada;
-    }
-  }
-}
 // Função para rolar até uma seção específica
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
@@ -362,6 +208,7 @@ function scrollToSection(sectionId) {
     element.scrollIntoView({ behavior: "smooth" });
   }
 }
+
 // Processar dados e preencher a tabela
 function processData() {
   const tableBody = document.getElementById("tableBody");
@@ -377,6 +224,17 @@ function processData() {
 
   // Obter dados filtrados
   const filteredData = getFilteredData();
+
+  if (filteredData.length === 0) {
+    // Se não houver dados, mostrar mensagem
+    const row = document.createElement("tr");
+    row.innerHTML = `<td colspan="7" style="text-align: center; padding: 20px; color: #666;">Nenhum dado encontrado com os filtros aplicados</td>`;
+    tableBody.appendChild(row);
+    
+    // Atualizar resumo com zeros
+    updateSummary(0, 0, 0);
+    return;
+  }
 
   // Processar cada item
   let total = 0;
@@ -394,21 +252,21 @@ function processData() {
     const precoTexto = item.J || "R$ 0,00";
     const preco = parseFloat(
       precoTexto.replace("R$ ", "").replace(/\./g, "").replace(",", ".")
-    );
+    ) || 0;
     const descricao = item.L || "";
 
     // Adicionar à tabela
     if (tableBody) {
       const row = document.createElement("tr");
       row.innerHTML = `
-                  <td>${fornecedor}</td>
-                  <td>${dataEmissao}</td>
-                  <td>${placa}</td>
-                  <td>${manutencao}</td>
-                  <td>${prazoPagamento}</td>
-                  <td>${formatCurrency(preco)}</td>
-                  <td>${descricao}</td>
-              `;
+        <td>${fornecedor}</td>
+        <td>${dataEmissao}</td>
+        <td>${placa}</td>
+        <td>${manutencao}</td>
+        <td>${prazoPagamento}</td>
+        <td>${formatCurrency(preco)}</td>
+        <td>${descricao}</td>
+      `;
       tableBody.appendChild(row);
     }
 
@@ -419,6 +277,11 @@ function processData() {
   });
 
   // Atualizar resumo
+  updateSummary(total, highest, vehicles.size);
+}
+
+// Atualizar o resumo financeiro
+function updateSummary(total, highest, vehicleCount) {
   const totalElement = document.getElementById("totalSpent");
   const highestElement = document.getElementById("highestExpense");
   const averageElement = document.getElementById("averagePerVehicle");
@@ -426,7 +289,7 @@ function processData() {
   if (totalElement) totalElement.textContent = formatCurrency(total);
   if (highestElement) highestElement.textContent = formatCurrency(highest);
   if (averageElement) {
-    const average = vehicles.size > 0 ? total / vehicles.size : 0;
+    const average = vehicleCount > 0 ? total / vehicleCount : 0;
     averageElement.textContent = formatCurrency(average);
   }
 }
@@ -436,6 +299,9 @@ function setupTableToggle() {
   const toggleBtn = document.getElementById("toggleTableBtn");
   const tableContainer = document.getElementById("tableContainer");
   const toggleIcon = document.getElementById("toggleIcon");
+  
+  if (!toggleBtn || !tableContainer) return;
+
   let isCollapsed = false;
 
   toggleBtn.addEventListener("click", function () {
@@ -455,20 +321,26 @@ function setupTableToggle() {
   });
 }
 
-// Filtros
-function setupFilters() {
+// Configurar eventos dos filtros
+function setupFilterEvents() {
   const monthFilter = document.getElementById("monthFilter");
   const weekFilter = document.getElementById("weekFilter");
   const placaFilter = document.getElementById("placaFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
 
-  if (monthFilter) monthFilter.addEventListener("change", updateFilters);
-  if (weekFilter) weekFilter.addEventListener("change", updateFilters);
-  if (placaFilter) placaFilter.addEventListener("change", updateFilters);
-  if (manutencaoFilter)
-    manutencaoFilter.addEventListener("change", updateFilters);
+  // Adicionar eventos de change a todos os filtros
+  const filters = [monthFilter, weekFilter, placaFilter, manutencaoFilter];
+  
+  filters.forEach(filter => {
+    if (filter) {
+      filter.addEventListener("change", function() {
+        updateFilters();
+      });
+    }
+  });
 }
 
+// Função para atualizar os filtros
 function updateFilters() {
   // Mostrar indicador de carregamento
   const loadingIndicator = document.getElementById("loadingIndicator");
@@ -477,20 +349,50 @@ function updateFilters() {
   if (loadingIndicator) loadingIndicator.style.display = "block";
   if (dataTable) dataTable.style.display = "none";
 
-  // Atualizar opções dos filtros
-  updateFilterOptions();
-
-  // Processar dados com filtros aplicados
+  // Processar dados com filtros aplicados após um pequeno delay para melhor UX
   setTimeout(() => {
     processData();
-  }, 300);
+  }, 100);
+}
+
+// Função para limpar todos os filtros
+function clearAllFilters() {
+  const monthFilter = document.getElementById("monthFilter");
+  const weekFilter = document.getElementById("weekFilter");
+  const placaFilter = document.getElementById("placaFilter");
+  const manutencaoFilter = document.getElementById("manutencaoFilter");
+
+  if (monthFilter) monthFilter.value = "all";
+  if (weekFilter) weekFilter.value = "all";
+  if (placaFilter) placaFilter.value = "all";
+  if (manutencaoFilter) manutencaoFilter.value = "all";
+
+  updateFilters();
+}
+
+// Adicionar botão de limpar filtros se não existir
+function addClearFiltersButton() {
+  const filterSection = document.querySelector('.filter-section');
+  if (!filterSection) return;
+
+  // Verificar se o botão já existe
+  if (document.getElementById('clearFiltersBtn')) return;
+
+  const clearButton = document.createElement('button');
+  clearButton.id = 'clearFiltersBtn';
+  clearButton.className = 'clear-filters-btn';
+  clearButton.innerHTML = '<i class="fas fa-times"></i> Limpar Filtros';
+  clearButton.addEventListener('click', clearAllFilters);
+
+  filterSection.appendChild(clearButton);
 }
 
 // Inicializar a página
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
-  setupFilters();
+  setupFilterEvents();
   setupTableToggle();
+  addClearFiltersButton();
 });
 
 // ====== CONFIGURAÇÃO DO RELATÓRIO FOTOGRÁFICO ======
@@ -925,9 +827,43 @@ function init() {
   document.getElementById("no-data-selected").style.display = "block";
   document.getElementById("details-content").style.display = "none";
 
-  loadPlacas();
   setupEventListeners();
   setupFilters();
+  aplicarFiltroPadrao();
+}
+
+// Função para aplicar filtro padrão (Semana 4)
+function aplicarFiltroPadrao() {
+  const weekFilter = document.getElementById('week-filter');
+  
+  // Verificar se existe a opção "Semana 4"
+  let opcaoSemana4 = Array.from(weekFilter.options).find(option => option.value === "Semana 4");
+  
+  if (opcaoSemana4) {
+    weekFilter.value = "Semana 4";
+  } else {
+    // Se não existir, tentar encontrar uma semana que contenha "4"
+    opcaoSemana4 = Array.from(weekFilter.options).find(option => 
+      option.value !== "all" && option.value.includes("4")
+    );
+    
+    if (opcaoSemana4) {
+      weekFilter.value = opcaoSemana4.value;
+    } else {
+      // Se não encontrar, usar a primeira semana disponível (diferente de "all")
+      const primeiraSemana = Array.from(weekFilter.options).find(option => 
+        option.value !== "all"
+      );
+      
+      if (primeiraSemana) {
+        weekFilter.value = primeiraSemana.value;
+      }
+      // Se não houver semanas, manter "all"
+    }
+  }
+  
+  // Aplicar os filtros com a semana selecionada
+  aplicarFiltros();
 }
 
 // Configurar filtros
@@ -1060,11 +996,6 @@ function aplicarFiltros() {
     document.getElementById("details-content").style.display = "none";
     selectedPlaca = null;
   }
-}
-
-// Carregar a lista de placas
-function loadPlacas() {
-  aplicarFiltros(); // Carrega a lista inicial aplicando os filtros padrão
 }
 
 // Selecionar uma placa
