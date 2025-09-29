@@ -17,11 +17,6 @@ window.addEventListener("scroll", () => {
 // Variáveis globais
 let allData = [];
 
-
-
-
-
-
 // Função para carregar dados do arquivo JSON
 function loadData() {
   const loadingIndicator = document.getElementById("loadingIndicator");
@@ -64,12 +59,12 @@ function loadData() {
     });
 }
 
-
 // Popular os filtros com os dados
 function populateFilters(data) {
   const placaFilter = document.getElementById("placaFilter");
   const monthFilter = document.getElementById("monthFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
+  const localidadeFilter = document.getElementById("localidadeFilter");
 
   // Limpar e popular filtro de placas
   if (placaFilter) {
@@ -130,6 +125,23 @@ function populateFilters(data) {
       manutencaoFilter.appendChild(option);
     });
   }
+
+  // Configurar filtro de localidade (agora usando item M)
+  if (localidadeFilter) {
+    localidadeFilter.innerHTML = '<option value="all">Todas as localidades</option>';
+    const localidades = new Set();
+
+    data.forEach((item) => {
+      if (item.M && item.M.trim() !== "") localidades.add(item.M);
+    });
+
+    localidades.forEach((localidade) => {
+      const option = document.createElement("option");
+      option.value = localidade;
+      option.textContent = localidade;
+      localidadeFilter.appendChild(option);
+    });
+  }
 }
 
 // Converter data do formato brasileiro para objeto Date
@@ -174,18 +186,23 @@ function getFilteredData() {
   const semanaFiltro = document.getElementById("weekFilter")?.value || "all";
   const placaFiltro = document.getElementById("placaFilter")?.value || "all";
   const manutencaoFiltro = document.getElementById("manutencaoFilter")?.value || "all";
+  const localidadeFiltro = document.getElementById("localidadeFilter")?.value || "all";
 
   return allData.filter((item) => {
     // Extrair valores
     const placa = item.D || "";
     const dataEmissao = item.B || "";
     const manutencao = item.F || "";
+    const localidade = item.M || ""; // AGORA usando item M para localidade
 
     // Aplicar filtro de placa
     if (placaFiltro !== "all" && placa !== placaFiltro) return false;
 
     // Aplicar filtro de manutenção
     if (manutencaoFiltro !== "all" && manutencao !== manutencaoFiltro) return false;
+
+    // Aplicar filtro de localidade
+    if (localidadeFiltro !== "all" && localidade !== localidadeFiltro) return false;
 
     const dataObj = parseDate(dataEmissao);
     
@@ -194,8 +211,6 @@ function getFilteredData() {
       if (!dataObj) return false; // Se não tem data, não passa no filtro de mês
       if (parseInt(mesFiltro) !== dataObj.getMonth()) return false;
     }
-
-  
 
     return true;
   });
@@ -228,7 +243,7 @@ function processData() {
   if (filteredData.length === 0) {
     // Se não houver dados, mostrar mensagem
     const row = document.createElement("tr");
-    row.innerHTML = `<td colspan="7" style="text-align: center; padding: 20px; color: #666;">Nenhum dado encontrado com os filtros aplicados</td>`;
+    row.innerHTML = `<td colspan="8" style="text-align: center; padding: 20px; color: #666;">Nenhum dado encontrado com os filtros aplicados</td>`;
     tableBody.appendChild(row);
     
     // Atualizar resumo com zeros
@@ -247,6 +262,7 @@ function processData() {
     const dataEmissao = item.B || "";
     const mes = item.C || "";
     const placa = item.D || "";
+    const localidade = item.M || ""; // AGORA usando item M para localidade
     const manutencao = item.F || "";
     const prazoPagamento = item.H || "";
     const precoTexto = item.J || "R$ 0,00";
@@ -262,6 +278,7 @@ function processData() {
         <td>${fornecedor}</td>
         <td>${dataEmissao}</td>
         <td>${placa}</td>
+       
         <td>${manutencao}</td>
         <td>${prazoPagamento}</td>
         <td>${formatCurrency(preco)}</td>
@@ -327,9 +344,10 @@ function setupFilterEvents() {
   const weekFilter = document.getElementById("weekFilter");
   const placaFilter = document.getElementById("placaFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
+  const localidadeFilter = document.getElementById("localidadeFilter");
 
   // Adicionar eventos de change a todos os filtros
-  const filters = [monthFilter, weekFilter, placaFilter, manutencaoFilter];
+  const filters = [monthFilter, weekFilter, placaFilter, manutencaoFilter, localidadeFilter];
   
   filters.forEach(filter => {
     if (filter) {
@@ -361,11 +379,13 @@ function clearAllFilters() {
   const weekFilter = document.getElementById("weekFilter");
   const placaFilter = document.getElementById("placaFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
+  const localidadeFilter = document.getElementById("localidadeFilter");
 
   if (monthFilter) monthFilter.value = "all";
   if (weekFilter) weekFilter.value = "all";
   if (placaFilter) placaFilter.value = "all";
   if (manutencaoFilter) manutencaoFilter.value = "all";
+  if (localidadeFilter) localidadeFilter.value = "all";
 
   updateFilters();
 }
@@ -387,14 +407,14 @@ function addClearFiltersButton() {
   filterSection.appendChild(clearButton);
 }
 
+
 // Inicializar a página
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
   setupFilterEvents();
-  setupTableToggle();
+  setupTableToggle(); 
   addClearFiltersButton();
 });
-
 // ====== CONFIGURAÇÃO DO RELATÓRIO FOTOGRÁFICO ======
 
 // Variáveis globais
