@@ -128,7 +128,7 @@ function populateFilters(data) {
 
   // Configurar filtro de localidade (agora usando item M)
   if (localidadeFilter) {
-    localidadeFilter.innerHTML = '<option value="all">Todas as localidades</option>';
+    localidadeFilter.innerHTML = '<option value="all">Todas as filiais</option>';
     const localidades = new Set();
 
     data.forEach((item) => {
