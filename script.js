@@ -550,12 +550,12 @@ function popularFiltrosFotos() {
     .forEach((semana) => {
       semanaFilter.innerHTML += `<option value="${semana}">Semana ${semana}</option>`;
     });
-
+  // FILTRO PADRÃO FOTOGRAFICO // 
   // Definir valores padrão do relatorio fotografico
-  mesFilter.value = "8"; // Setembro é o mês 8 (0-indexed)
+  mesFilter.value = "9"; // Setembro é o mês 8 (0-indexed)
   frotaFilter.value = "Todas as frotas"; // Valor padrão para frota
   if (semanas.includes(1)) {
-    semanaFilter.value = "4";
+    semanaFilter.value = "1";
   }
 
   console.log("Filtros populados:", {
@@ -969,79 +969,133 @@ function converterLinkGoogleDrive(link) {
 
 // Função para carregar dados do JSON
 function carregarDadosRastreio() {
+  console.log("Carregando dados de rastreio...");
+  
   // Tenta carregar do arquivo rastreio.json
   fetch("dados/rastreio.json")
     .then((response) => {
       if (!response.ok) {
-        throw new Error(
-          "Arquivo rastreio.json não encontrado. Usando dados de exemplo."
-        );
+        throw new Error("Arquivo rastreio.json não encontrado");
       }
       return response.json();
     })
     .then((data) => {
+      console.log("Dados carregados:", data);
       trajetoData = data;
       init();
     })
     .catch((error) => {
       console.error(error);
-      // Se não encontrar o arquivo, usa dados de exemplo
+      // Usar dados de exemplo se o arquivo não for encontrado
+      trajetoData = [
+        {
+          A: "01/10/2024",
+          B: "ABC1234",
+          C: "PESADO",
+          D: "150",
+          E: "320",
+          F: "45",
+          G: "365",
+          H: "8",
+          J: "15",
+          M: "https://drive.google.com/thumbnail?id=1example1&sz=w1000",
+          N: "Semana 1",
+          O: "Outubro"
+        },
+        {
+          A: "02/10/2024", 
+          B: "XYZ5678",
+          C: "LEVE",
+          D: "80",
+          E: "180",
+          F: "20",
+          G: "200",
+          H: "5",
+          J: "10",
+          M: "https://drive.google.com/thumbnail?id=1example2&sz=w1000",
+          N: "Semana 1",
+          O: "Outubro"
+        }
+      ];
+      console.log("Usando dados de exemplo:", trajetoData);
       init();
     });
 }
 
 // Função para inicializar a aplicação
 function init() {
+  console.log("Inicializando rastreamento...");
+  
   // Inicialmente mostrar a mensagem de seleção e esconder os detalhes
   document.getElementById("no-data-selected").style.display = "block";
   document.getElementById("details-content").style.display = "none";
 
   setupEventListeners();
   setupFilters();
-  aplicarFiltroPadrao();
 }
 
-// Função para aplicar filtro padrão (Semana 4)
+// CONFIGURAÇÃO PADRÃO DOS FILTROS - OUTUBRO E SEMANA 1
 function aplicarFiltroPadrao() {
+  console.log("Aplicando filtros padrão...");
+  
+  const monthFilter = document.getElementById('month-filter');
   const weekFilter = document.getElementById('week-filter');
   
-  // Verificar se existe a opção "Semana 4"
-  let opcaoSemana4 = Array.from(weekFilter.options).find(option => option.value === "Semana 4");
-  
-  if (opcaoSemana4) {
-    weekFilter.value = "Semana 4";
-  } else {
-    // Se não existir, tentar encontrar uma semana que contenha "4"
-    opcaoSemana4 = Array.from(weekFilter.options).find(option => 
-      option.value !== "all" && option.value.includes("4")
-    );
-    
-    if (opcaoSemana4) {
-      weekFilter.value = opcaoSemana4.value;
-    } else {
-      // Se não encontrar, usar a primeira semana disponível (diferente de "all")
-      const primeiraSemana = Array.from(weekFilter.options).find(option => 
-        option.value !== "all"
-      );
-      
-      if (primeiraSemana) {
-        weekFilter.value = primeiraSemana.value;
-      }
-      // Se não houver semanas, manter "all"
+  if (!monthFilter || !weekFilter) {
+    console.error("Filtros não encontrados");
+    return;
+  }
+
+  // Configurar Outubro como padrão
+  let outubroEncontrado = false;
+  for (let option of monthFilter.options) {
+    if (option.value.toLowerCase().includes('outubro') || option.text.toLowerCase().includes('outubro')) {
+      monthFilter.value = option.value;
+      outubroEncontrado = true;
+      console.log("Outubro selecionado:", option.value);
+      break;
     }
   }
   
-  // Aplicar os filtros com a semana selecionada
+  if (!outubroEncontrado && monthFilter.options.length > 1) {
+    monthFilter.value = monthFilter.options[1].value;
+    console.log("Outubro não encontrado, usando:", monthFilter.options[1].value);
+  }
+
+  // Configurar Semana 1 como padrão
+  let semana1Encontrada = false;
+  for (let option of weekFilter.options) {
+    if (option.value.includes('1') || option.text.includes('1')) {
+      weekFilter.value = option.value;
+      semana1Encontrada = true;
+      console.log("Semana 1 selecionada:", option.value);
+      break;
+    }
+  }
+  
+  if (!semana1Encontrada && weekFilter.options.length > 1) {
+    weekFilter.value = weekFilter.options[1].value;
+    console.log("Semana 1 não encontrada, usando:", weekFilter.options[1].value);
+  }
+
+  // Aplicar os filtros
   aplicarFiltros();
 }
 
 // Configurar filtros
 function setupFilters() {
+  console.log("Configurando filtros...");
+  
   const monthFilter = document.getElementById("month-filter");
   const weekFilter = document.getElementById("week-filter");
   const placaFilter = document.getElementById("placa-filter");
   const maintenanceFilter = document.getElementById("maintenance-filter");
   const typeFilter = document.getElementById("type-filter");
+
+  if (!monthFilter || !weekFilter || !placaFilter) {
+    console.error("Elementos de filtro não encontrados");
+    return;
+  }
 
   // Limpar filtros
   monthFilter.innerHTML = '<option value="all">Todos os meses</option>';
@@ -1049,9 +1103,9 @@ function setupFilters() {
   placaFilter.innerHTML = '<option value="all">Todas as placas</option>';
 
   // Extrair meses únicos (coluna O)
-  const mesesUnicos = [
-    ...new Set(trajetoData.map((item) => item.O || "Mês não informado")),
-  ];
+  const mesesUnicos = [...new Set(trajetoData.map((item) => item.O || "Mês não informado"))];
+  console.log("Meses únicos:", mesesUnicos);
+  
   mesesUnicos.forEach((mes) => {
     const option = document.createElement("option");
     option.value = mes;
@@ -1060,9 +1114,9 @@ function setupFilters() {
   });
 
   // Extrair semanas únicas (coluna N)
-  const semanasUnicas = [
-    ...new Set(trajetoData.map((item) => item.N || "Semana não informada")),
-  ];
+  const semanasUnicas = [...new Set(trajetoData.map((item) => item.N || "Semana não informada"))];
+  console.log("Semanas únicas:", semanasUnicas);
+  
   semanasUnicas.forEach((semana) => {
     const option = document.createElement("option");
     option.value = semana;
@@ -1071,7 +1125,9 @@ function setupFilters() {
   });
 
   // Extrair placas únicas
-  const placasUnicas = [...new Set(trajetoData.map((item) => item.B))];
+  const placasUnicas = [...new Set(trajetoData.map((item) => item.B))].filter(placa => placa);
+  console.log("Placas únicas:", placasUnicas);
+  
   placasUnicas.forEach((placa) => {
     const option = document.createElement("option");
     option.value = placa;
@@ -1083,81 +1139,126 @@ function setupFilters() {
   monthFilter.addEventListener("change", aplicarFiltros);
   weekFilter.addEventListener("change", aplicarFiltros);
   placaFilter.addEventListener("change", aplicarFiltros);
-  maintenanceFilter.addEventListener("change", aplicarFiltros);
-  typeFilter.addEventListener("change", aplicarFiltros);
+  
+  if (maintenanceFilter) {
+    maintenanceFilter.addEventListener("change", aplicarFiltros);
+  }
+  
+  if (typeFilter) {
+    typeFilter.addEventListener("change", aplicarFiltros);
+  }
+
+  // Aplicar filtros padrão após um pequeno delay
+  setTimeout(() => {
+    aplicarFiltroPadrao();
+  }, 100);
 }
 
 // Aplicar filtros
 function aplicarFiltros() {
-  const monthFilter = document.getElementById("month-filter").value;
-  const weekFilter = document.getElementById("week-filter").value;
-  const placaFilter = document.getElementById("placa-filter").value;
-  const maintenanceFilter = document.getElementById("maintenance-filter").value;
-  const typeFilter = document.getElementById("type-filter").value;
+  console.log("Aplicando filtros...");
+  
+  const monthFilter = document.getElementById("month-filter");
+  const weekFilter = document.getElementById("week-filter");
+  const placaFilter = document.getElementById("placa-filter");
+  const maintenanceFilter = document.getElementById("maintenance-filter");
+  const typeFilter = document.getElementById("type-filter");
+
+  if (!monthFilter || !weekFilter || !placaFilter) {
+    console.error("Filtros não encontrados");
+    return;
+  }
+
+  const mesSelecionado = monthFilter.value;
+  const semanaSelecionada = weekFilter.value;
+  const placaSelecionada = placaFilter.value;
+  const manutencaoSelecionada = maintenanceFilter ? maintenanceFilter.value : "all";
+  const tipoSelecionado = typeFilter ? typeFilter.value : "all";
+
+  console.log("Filtros selecionados:", {
+    mes: mesSelecionado,
+    semana: semanaSelecionada,
+    placa: placaSelecionada,
+    manutencao: manutencaoSelecionada,
+    tipo: tipoSelecionado
+  });
 
   // Filtrar dados com base nos filtros
   let dadosFiltrados = trajetoData;
 
-  if (monthFilter !== "all") {
-    dadosFiltrados = dadosFiltrados.filter((item) => item.O === monthFilter);
+  if (mesSelecionado !== "all") {
+    dadosFiltrados = dadosFiltrados.filter((item) => item.O === mesSelecionado);
   }
 
-  if (weekFilter !== "all") {
-    dadosFiltrados = dadosFiltrados.filter((item) => item.N === weekFilter);
+  if (semanaSelecionada !== "all") {
+    dadosFiltrados = dadosFiltrados.filter((item) => item.N === semanaSelecionada);
   }
 
-  if (placaFilter !== "all") {
-    dadosFiltrados = dadosFiltrados.filter((item) => item.B === placaFilter);
+  if (placaSelecionada !== "all") {
+    dadosFiltrados = dadosFiltrados.filter((item) => item.B === placaSelecionada);
   }
 
-  if (typeFilter !== "all") {
-    dadosFiltrados = dadosFiltrados.filter((item) => item.C === typeFilter);
+  if (tipoSelecionado !== "all") {
+    dadosFiltrados = dadosFiltrados.filter((item) => item.C === tipoSelecionado);
   }
 
-  // Filtrar por manutenção (exemplo simplificado)
-  if (maintenanceFilter !== "all") {
-    // Esta é uma implementação de exemplo - ajuste conforme seus dados
-    if (maintenanceFilter === "com_manutencao") {
-      dadosFiltrados = dadosFiltrados.filter((item) => item.H > 15); // Exemplo: mais de 15 paradas
+  // Filtrar por manutenção
+  if (manutencaoSelecionada !== "all") {
+    if (manutencaoSelecionada === "com_manutencao") {
+      dadosFiltrados = dadosFiltrados.filter((item) => parseInt(item.H) > 15);
     } else {
-      dadosFiltrados = dadosFiltrados.filter((item) => item.H <= 15); // Exemplo: 15 ou menos paradas
+      dadosFiltrados = dadosFiltrados.filter((item) => parseInt(item.H) <= 15);
     }
   }
 
+  console.log("Dados após filtro:", dadosFiltrados);
+
   // Extrair placas únicas dos dados filtrados
-  const placasFiltradas = [...new Set(dadosFiltrados.map((item) => item.B))];
+  const placasFiltradas = [...new Set(dadosFiltrados.map((item) => item.B))].filter(placa => placa);
+  console.log("Placas filtradas:", placasFiltradas);
 
   // Atualizar lista de placas
   const placasList = document.getElementById("placas-list");
+  if (!placasList) {
+    console.error("Elemento placas-list não encontrado");
+    return;
+  }
+
   placasList.innerHTML = "";
 
   placasFiltradas.forEach((placa) => {
     // Encontrar a data mais recente para esta placa
-    const datasPlaca = dadosFiltrados
-      .filter((item) => item.B === placa)
-      .map((item) => item.A);
-
-    const dataRecente = datasPlaca.sort((a, b) => {
-      const [diaA, mesA, anoA] = a.split("/");
-      const [diaB, mesB, anoB] = b.split("/");
-      return new Date(anoB, mesB - 1, diaB) - new Date(anoA, mesA - 1, diaA);
-    })[datasPlaca.length - 1];
+    const dadosPlaca = dadosFiltrados.filter((item) => item.B === placa);
+    const datasPlaca = dadosPlaca.map((item) => item.A).filter(data => data);
+    
+    let dataRecente = "Data não disponível";
+    if (datasPlaca.length > 0) {
+      datasPlaca.sort((a, b) => {
+        const [diaA, mesA, anoA] = a.split("/").map(Number);
+        const [diaB, mesB, anoB] = b.split("/").map(Number);
+        return new Date(anoB, mesB - 1, diaB) - new Date(anoA, mesA - 1, diaA);
+      });
+      dataRecente = datasPlaca[datasPlaca.length - 1];
+    }
 
     const placaItem = document.createElement("div");
     placaItem.classList.add("placa-item");
     placaItem.dataset.placa = placa;
 
     placaItem.innerHTML = `
-                    <span class="placa-text">${placa}</span>
-                    <span class="placa-date">${dataRecente}</span>
-                `;
+      <span class="placa-text">${placa}</span>
+      <span class="placa-date">${dataRecente}</span>
+    `;
 
     placaItem.addEventListener("click", () => selectPlaca(placa));
     placasList.appendChild(placaItem);
   });
 
   // Atualizar contador
-  document.getElementById("placas-count").textContent = placasFiltradas.length;
+  const placasCount = document.getElementById("placas-count");
+  if (placasCount) {
+    placasCount.textContent = placasFiltradas.length;
+  }
 
   // Se a placa selecionada não estiver mais na lista filtrada, limpar detalhes
   if (selectedPlaca && !placasFiltradas.includes(selectedPlaca)) {
@@ -1165,10 +1266,17 @@ function aplicarFiltros() {
     document.getElementById("details-content").style.display = "none";
     selectedPlaca = null;
   }
+
+  // Se há apenas uma placa após filtrar, selecioná-la automaticamente
+  if (placasFiltradas.length === 1 && !selectedPlaca) {
+    selectPlaca(placasFiltradas[0]);
+  }
 }
 
 // Selecionar uma placa
 function selectPlaca(placa) {
+  console.log("Selecionando placa:", placa);
+  
   selectedPlaca = placa;
 
   // Atualizar UI
@@ -1189,225 +1297,234 @@ function selectPlaca(placa) {
 
 // Carregar detalhes da placa selecionada
 function loadPlacaDetails(placa) {
+  console.log("Carregando detalhes da placa:", placa);
+  
   const detailDateFilter = document.getElementById("detail-date-filter");
   const placaText = document.getElementById("placa-text");
   const porteText = document.getElementById("porte-text");
+
+  if (!detailDateFilter || !placaText || !porteText) {
+    console.error("Elementos de detalhes não encontrados");
+    return;
+  }
 
   // Filtrar dados por placa
   filteredData = trajetoData.filter((item) => item.B === placa);
 
   // Aplicar filtros adicionais
-  const monthFilter = document.getElementById("month-filter").value;
-  const weekFilter = document.getElementById("week-filter").value;
+  const monthFilter = document.getElementById("month-filter");
+  const weekFilter = document.getElementById("week-filter");
 
-  if (monthFilter !== "all") {
-    filteredData = filteredData.filter((item) => item.O === monthFilter);
+  if (monthFilter && monthFilter.value !== "all") {
+    filteredData = filteredData.filter((item) => item.O === monthFilter.value);
   }
 
-  if (weekFilter !== "all") {
-    filteredData = filteredData.filter((item) => item.N === weekFilter);
+  if (weekFilter && weekFilter.value !== "all") {
+    filteredData = filteredData.filter((item) => item.N === weekFilter.value);
   }
+
+  console.log("Dados filtrados para a placa:", filteredData);
 
   // Atualizar header com placa e porte
   placaText.textContent = placa;
 
-  // Obter o porte (assumindo que é o mesmo para todas as datas)
+  // Obter o porte
   if (filteredData.length > 0) {
-    porteText.textContent = filteredData[0].C;
+    porteText.textContent = filteredData[0].C || "Porte não informado";
   }
 
   // Popular filtro de datas no painel de detalhes
   detailDateFilter.innerHTML = "";
-  const datasPlaca = [...new Set(filteredData.map((item) => item.A))];
-  datasPlaca
-    .sort((a, b) => {
-      const [dayA, monthA, yearA] = a.split("/");
-      const [dayB, monthB, yearB] = b.split("/");
-      return (
-        new Date(`${yearB}-${monthB}-${dayB}`) -
-        new Date(`${yearA}-${monthA}-${dayA}`)
-      );
-    })
-    .forEach((data) => {
-      const option = document.createElement("option");
-      option.value = data;
+  const datasPlaca = [...new Set(filteredData.map((item) => item.A))].filter(data => data);
+  
+  // Ordenar datas do mais recente para o mais antigo
+  datasPlaca.sort((a, b) => {
+    const [dayA, monthA, yearA] = a.split("/").map(Number);
+    const [dayB, monthB, yearB] = b.split("/").map(Number);
+    return new Date(yearB, monthB - 1, dayB) - new Date(yearA, monthA - 1, dayA);
+  });
 
-      // Adicionar dia da semana
-      const [dia, mes, ano] = data.split("/");
-      const dataObj = new Date(ano, mes - 1, dia);
-      const diasSemana = [
-        "Domingo",
-        "Segunda",
-        "Terça",
-        "Quarta",
-        "Quinta",
-        "Sexta",
-        "Sábado",
-      ];
-      const diaSemana = diasSemana[dataObj.getDay()];
+  datasPlaca.forEach((data) => {
+    const option = document.createElement("option");
+    option.value = data;
 
-      option.textContent = `${diaSemana} - ${data}`;
-      detailDateFilter.appendChild(option);
-    });
+    // Adicionar dia da semana
+    const [dia, mes, ano] = data.split("/").map(Number);
+    const dataObj = new Date(ano, mes - 1, dia);
+    const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+    const diaSemana = diasSemana[dataObj.getDay()];
+
+    option.textContent = `${diaSemana} - ${data}`;
+    detailDateFilter.appendChild(option);
+  });
 
   // Selecionar a data mais recente por padrão
   if (datasPlaca.length > 0) {
-    detailDateFilter.value = datasPlaca[datasPlaca.length - 1];
-    showDataForDate(datasPlaca[datasPlaca.length - 1]);
+    detailDateFilter.value = datasPlaca[0];
+    showDataForDate(datasPlaca[0]);
+  } else {
+    // Se não há dados, mostrar mensagem
+    const detailsGrid = document.querySelector(".details-grid");
+    if (detailsGrid) {
+      detailsGrid.innerHTML = '<div class="no-data"><i class="fas fa-exclamation-circle"></i><p>Nenhum dado encontrado para esta placa</p></div>';
+    }
   }
 }
 
 // Mostrar dados para uma data específica
 function showDataForDate(data) {
+  console.log("Mostrando dados para data:", data);
+  
   const mapImage = document.getElementById("map-image");
   const mapPlaceholder = document.getElementById("map-placeholder");
+  const detailsGrid = document.querySelector(".details-grid");
+
+  if (!mapImage || !mapPlaceholder || !detailsGrid) {
+    console.error("Elementos de exibição não encontrados");
+    return;
+  }
 
   // Encontrar os dados para a data selecionada
   const dataItem = filteredData.find((item) => item.A === data);
 
   if (!dataItem) {
-    // Se não encontrar dados, mostrar mensagem
-    const detailsGrid = document.querySelector(".details-grid");
-    detailsGrid.innerHTML =
-      '<div class="no-data"><i class="fas fa-exclamation-circle"></i><p>Nenhum dado encontrado para esta data</p></div>';
+    detailsGrid.innerHTML = '<div class="no-data"><i class="fas fa-exclamation-circle"></i><p>Nenhum dado encontrado para esta data</p></div>';
     return;
   }
 
   // Atualizar os detalhes na grid
-  const detailsGrid = document.querySelector(".details-grid");
   detailsGrid.innerHTML = `
-                <div class="detail-card">
-                    <h3>Data</h3>
-                    <div class="detail-value">${dataItem.A}</div>
-                </div>
-                <div class="detail-card">
-                    <h3>Distância Percorrida</h3>
-                    <div class="detail-value">${dataItem.D} <span class="detail-unit">km</span></div>
-                </div>
-                <div class="detail-card">
-                    <h3>Tempo de Motor Ocioso</h3>
-                    <div class="detail-value">${dataItem.F} <span class="detail-unit">min</span></div>
-                </div>
-                <div class="detail-card">
-                    <h3>Porte</h3>
-                    <div class="detail-value">${dataItem.C}</div>
-                </div>
-                <div class="detail-card">
-                    <h3>Tempo Total Dirigido</h3>
-                    <div class="detail-value">${dataItem.E} <span class="detail-unit">min</span></div>
-                </div>
-                <div class="detail-card">
-                    <h3>Total de Paradas</h3>
-                    <div class="detail-value">${dataItem.H} <span class="detail-unit">paradas</span></div>
-                </div>
-                <div class="detail-card">
-                    <h3>Tempo Médio de Cada Parada</h3>
-                    <div class="detail-value">${dataItem.J} <span class="detail-unit">min</span></div>
-                </div>
-                <div class="detail-card">
-                    <h3>Tempo Total de Motor Ligado</h3>
-                    <div class="detail-value">${dataItem.G} <span class="detail-unit">min</span></div>
-                </div>
-            `;
+    <div class="detail-card">
+      <h3>Data</h3>
+      <div class="detail-value">${dataItem.A || 'Não informado'}</div>
+    </div>
+    <div class="detail-card">
+      <h3>Distância Percorrida</h3>
+      <div class="detail-value">${dataItem.D || '0'} <span class="detail-unit">km</span></div>
+    </div>
+    <div class="detail-card">
+      <h3>Tempo de Motor Ocioso</h3>
+      <div class="detail-value">${dataItem.F || '0'} <span class="detail-unit">min</span></div>
+    </div>
+    <div class="detail-card">
+      <h3>Porte</h3>
+      <div class="detail-value">${dataItem.C || 'Não informado'}</div>
+    </div>
+    <div class="detail-card">
+      <h3>Tempo Total Dirigido</h3>
+      <div class="detail-value">${dataItem.E || '0'} <span class="detail-unit">min</span></div>
+    </div>
+    <div class="detail-card">
+      <h3>Total de Paradas</h3>
+      <div class="detail-value">${dataItem.H || '0'} <span class="detail-unit">paradas</span></div>
+    </div>
+    <div class="detail-card">
+      <h3>Tempo Médio de Cada Parada</h3>
+      <div class="detail-value">${dataItem.J || '0'} <span class="detail-unit">min</span></div>
+    </div>
+    <div class="detail-card">
+      <h3>Tempo Total de Motor Ligado</h3>
+      <div class="detail-value">${dataItem.G || '0'} <span class="detail-unit">min</span></div>
+    </div>
+  `;
 
-  // Carregar imagem do mapa a partir do campo M do JSON
+  // Carregar imagem do mapa
   if (dataItem.M) {
-    // Converter link do Google Drive para link de thumbnail
     const convertedLink = converterLinkGoogleDrive(dataItem.M);
-
-    // Mostrar placeholder enquanto a imagem carrega
+    
     mapPlaceholder.style.display = "flex";
     mapImage.style.display = "none";
 
-    // Criar uma nova imagem para verificar se carrega corretamente
     const testImage = new Image();
     testImage.onload = function () {
-      // Se carregar com sucesso, mostrar a imagem
       mapImage.src = convertedLink;
       mapImage.style.display = "block";
       mapPlaceholder.style.display = "none";
-
-      // Armazenar o link original para abrir em tela cheia
       mapImage.dataset.original = dataItem.M;
     };
     testImage.onerror = function () {
-      // Se der erro, manter o placeholder
-      mapPlaceholder.innerHTML =
-        '<i class="fas fa-exclamation-triangle"></i><p>Não foi possível carregar o mapa</p>';
+      mapPlaceholder.innerHTML = '<i class="fas fa-exclamation-triangle"></i><p>Não foi possível carregar o mapa</p>';
+      mapPlaceholder.style.display = "flex";
+      mapImage.style.display = "none";
     };
     testImage.src = convertedLink;
   } else {
-    // Se não houver link de mapa
-    mapPlaceholder.innerHTML =
-      '<i class="fas fa-map"></i><p>Nenhum mapa disponível</p>';
+    mapPlaceholder.innerHTML = '<i class="fas fa-map"></i><p>Nenhum mapa disponível</p>';
+    mapPlaceholder.style.display = "flex";
+    mapImage.style.display = "none";
   }
 }
 
 // Configurar event listeners
 function setupEventListeners() {
+  console.log("Configurando event listeners...");
+  
   // Filtro de pesquisa de placas
-  document
-    .getElementById("search-placas")
-    .addEventListener("input", function () {
+  const searchPlacas = document.getElementById("search-placas");
+  if (searchPlacas) {
+    searchPlacas.addEventListener("input", function () {
       const searchText = this.value.toLowerCase();
       document.querySelectorAll(".placa-item").forEach((item) => {
         const placa = item.dataset.placa.toLowerCase();
-        if (placa.includes(searchText)) {
-          item.style.display = "flex";
-        } else {
-          item.style.display = "none";
-        }
+        item.style.display = placa.includes(searchText) ? "flex" : "none";
       });
     });
+  }
 
   // Filtro de data no painel de detalhes
-  document
-    .getElementById("detail-date-filter")
-    .addEventListener("change", function () {
+  const detailDateFilter = document.getElementById("detail-date-filter");
+  if (detailDateFilter) {
+    detailDateFilter.addEventListener("change", function () {
       showDataForDate(this.value);
     });
+  }
 
   // Botão fechar painel
-  document.getElementById("close-panel").addEventListener("click", function () {
-    document.getElementById("no-data-selected").style.display = "block";
-    document.getElementById("details-content").style.display = "none";
-    document.querySelectorAll(".placa-item").forEach((item) => {
-      item.classList.remove("active");
+  const closePanel = document.getElementById("close-panel");
+  if (closePanel) {
+    closePanel.addEventListener("click", function () {
+      document.getElementById("no-data-selected").style.display = "block";
+      document.getElementById("details-content").style.display = "none";
+      document.querySelectorAll(".placa-item").forEach((item) => {
+        item.classList.remove("active");
+      });
+      selectedPlaca = null;
     });
-    selectedPlaca = null;
-  });
+  }
 
-  // Abrir imagem em tela cheia
-  document.getElementById("map-image").addEventListener("click", function () {
-    const modal = document.getElementById("image-modal");
-    const modalImg = document.getElementById("modal-image");
-    const originalLink = this.dataset.original;
+  // Modal da imagem
+  const mapImage = document.getElementById("map-image");
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-image");
+  const closeModal = document.getElementById("close-modal");
 
-    if (originalLink) {
-      // Usar o link convertido para visualização
-      modalImg.src = converterLinkGoogleDrive(originalLink);
-      modal.style.display = "block";
-    }
-  });
+  if (mapImage && modal && modalImg && closeModal) {
+    mapImage.addEventListener("click", function () {
+      const originalLink = this.dataset.original;
+      if (originalLink) {
+        modalImg.src = converterLinkGoogleDrive(originalLink);
+        modal.style.display = "block";
+      }
+    });
 
-  // Fechar modal
-  document.getElementById("close-modal").addEventListener("click", function () {
-    document.getElementById("image-modal").style.display = "none";
-  });
+    closeModal.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
 
-  // Fechar modal ao clicar fora da imagem
-  document
-    .getElementById("image-modal")
-    .addEventListener("click", function (e) {
+    modal.addEventListener("click", function (e) {
       if (e.target === this) {
         this.style.display = "none";
       }
     });
+  }
 }
 
 // Inicializar quando a página carregar
-document.addEventListener("DOMContentLoaded", carregarDadosRastreio);
-//*********************************** FIM DA SEÇÃO DO RASTREAMENTO *****************************************//    
+document.addEventListener("DOMContentLoaded", function() {
+  console.log("DOM carregado, iniciando rastreamento...");
+  carregarDadosRastreio();
+});
+//*********************************** FIM DA SEÇÃO DO RASTREAMENTO *****************************************//
 
 //*********************************** INICIO SEÇÃO RELATÓRIO FOTOGRÁFICO  *********************************/
 // Inicializar quando a página carregar
@@ -1692,13 +1809,13 @@ function popularFiltrosManutencao() {
   tipos.forEach((tipo) => {
     tipoFilter.innerHTML += `<option value="${tipo}">${tipo}</option>`;
   });
-
+  // VALOR PADRAO FILTRO MANUTENCAO //
   // Definir valores padrão
-  mesFilter.value = "8"; // Setembro
+  mesFilter.value = "9"; 
 
   // ALTERAÇÃO AQUI: Priorizar semana 3, se disponível
-  if (semanas.includes(3)) {
-    semanaFilter.value = "3";
+  if (semanas.includes(1)) {
+    semanaFilter.value = "1";
   } else if (semanas.length > 0) {
     // Se semana 3 não estiver disponível, usar a primeira semana disponível
     semanaFilter.value = semanas[0].toString();
