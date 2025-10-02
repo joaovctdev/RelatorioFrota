@@ -116,11 +116,12 @@
     {
         "PLACA": "QZL-7E78",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "SÉRGIO DE SOUZA",
-        "ENCARREGADO": "ESMERALDO",
-        "SUPERVISOR": "RENATO",
-        "LOCAL": "XIQUE-XIQUE",
-        "STATUS": "EM OPERAÇÃO"
+        "MOTORISTA": "OCIOSO",
+        "ENCARREGADO": "MÁRCIO FROTA",
+        "SUPERVISOR": "",
+        "LOCAL": "BASE IRECÊ",
+        "STATUS": "OCIOSO"
+        
     },
     {
         "PLACA": "QZT-7H96",
