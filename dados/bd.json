@@ -1,35 +1,5 @@
 [
  {
-   "A": "Column3",
-   "B": "Column4",
-   "C": "Column5",
-   "D": "Column6",
-   "E": "Column7",
-   "F": "Column10",
-   "G": "Column11",
-   "H": "Column12",
-   "I": "Column14",
-   "J": "Column18",
-   "K": "Column19",
-   "L": "Column20",
-   "M": "Column21"
- },
- {
-   "A": "FORNECEDOR",
-   "B": "Data da Emissão",
-   "C": "Mes",
-   "D": "Placa",
-   "E": "N° da Nota",
-   "F": "TIPO DO SERVIÇO",
-   "G": "TIPO DE PAGAMENTO",
-   "H": "Prazo de Pag. do Fornec.",
-   "I": "PC",
-   "J": "VALOR",
-   "K": "SITUAÇÃO",
-   "L": "DESCRIÇÃO DO SERVIÇO",
-   "M": "LOCALIDADE"
- },
- {
    "A": "MARIA DO CARMO NASCIMENTO",
    "B": "01/10/2025",
    "C": "Outubro",
