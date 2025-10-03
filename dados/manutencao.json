@@ -3,14 +3,14 @@
     {
         "MES": "Outubro",
         "SEMANA": "1",
-        "PLACA": "QZB-6E32",
+        "PLACA": "QZL-7E78",
         "MANUTENÇÃO": "CORRETIVA",
-        "FOTO FRENTE": "https://drive.google.com/file/d/1C-C7rWVP7optVQUwgGf_ncI8yMuJBn3h/view?usp=drive_link",
-        "FOTO AVARIA": "https://drive.google.com/file/d/11NZOO9gduLD3i-S3eNG0mP05zP4ChxU3/view?usp=drive_link", 
-        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1WIX9aXO3NWdO2oNZhDI6-9_Z20_Km2d7/view?usp=drive_link",
-        "FOTO KM": "https://drive.google.com/file/d/13DvxOHrxN7NbHZWwpvjRusRqQOEBipZ3/view?usp=drive_link",
-        "DESCRICAO": "VEÍCULO APRESENTOU VARIAS RACHADURAS NA LANÇA E NO TRADO, NECESSITOU FAZER DIVERSAS SOLDAS NOS EQUIPAMENTOS",
-        "CUSTO": 1049.85 
+        "FOTO FRENTE": "https://drive.google.com/file/d/1JZwzt7Zv0lZvhyBQGpqFJ-x_24kQiBgo/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/1_L3IWUVTdfpSX9diW7n8fWZAfwXhtZtn/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1vMx6keXrMhkHB5jxTM2ly7AstdcEB4Lb/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1BWIov__rQiOVZMOOX6a095V03s4Ohly1/view?usp=drive_link",
+        "DESCRICAO": "BATERIA DO VEÍCULO NÃO ESTAVA SEGURANDO CARGA, FOI NECESSÁRIO A COMPRA E TROCA DE OUTRA BATERIA",
+        "CUSTO": 1230  
     }
    
 ]
