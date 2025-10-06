@@ -10,7 +10,21 @@
         "FOTO MANUTENCAO": "https://drive.google.com/file/d/1vMx6keXrMhkHB5jxTM2ly7AstdcEB4Lb/view?usp=drive_link",
         "FOTO KM": "https://drive.google.com/file/d/1BWIov__rQiOVZMOOX6a095V03s4Ohly1/view?usp=drive_link",
         "DESCRICAO": "BATERIA DO VEÍCULO NÃO ESTAVA SEGURANDO CARGA, FOI NECESSÁRIO A COMPRA E TROCA DE OUTRA BATERIA",
-        "CUSTO": 1230  
+        "CUSTO": 1230,
+        "LOCALIDADE": "IRECE"  
+    },
+    {
+        "MES": "Outubro",
+        "SEMANA": "1",
+        "PLACA": "PHQ-1D82",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/1tJT7xpFqcU19EwNkvZVXzOIetDu8eJW2/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/16-e2djXSt-C7wDrpJBfvsXSE6uQekM-q/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1dLkK6Lkh_Qre67-m-dxkxufI_3y7YdYy/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1s5tublBcKr9sqzMpDZPSNNGcAm9tMXFT/view?usp=drive_link",
+        "DESCRICAO": "EQUIPAMENTO APRESENTOU TRINCAS NAS LANÇAS, FOI NECESSÁRIO UMA SOLDA NO LOCAL",
+        "CUSTO": 600,
+        "LOCALIDADE": "IRECE"  
     }
    
 ]

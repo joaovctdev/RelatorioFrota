@@ -148,5 +148,35 @@
    "K": "PENDENTE",
    "L": "REFERENTE A CONEXÕES E INSERTO AO SERVIÇO DA NF 1708",
    "M": "IRECÊ"
+ },
+ {
+   "A": "AVDIESEL - AUTOPECAS",
+   "B": "06/10/2025",
+   "C": "Outubro",
+   "D": "PHQ1D82",
+   "E": "1717",
+   "F": "CORRETIVA",
+   "G": "BOLETO",
+   "H": "06/11/2025",
+   "I": "",
+   "J": "R$ 600,00",
+   "K": "PENDENTE",
+   "L": "REFERENTE A SERVIÇO DE RECUPERAÇÃO DA LANÇA HIDRAULICA",
+   "M": "IRECÊ"
+ },
+ {
+   "A": "PNEUSCAR ",
+   "B": "06/10/2025",
+   "C": "Outubro",
+   "D": "RATEIO",
+   "E": "6228",
+   "F": "PNEU",
+   "G": "BOLETO",
+   "H": "05/11/2025",
+   "I": "",
+   "J": "R$ 985,00",
+   "K": "PENDENTE",
+   "L": "REFERENTE A VARIOS CONSERTO DE PNEUS E SERVIÇOS DE FORÇAS",
+   "M": "IRECÊ"
  }
 ]
