@@ -120,7 +120,9 @@
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "",
         "LOCAL": "BASE IRECÊ",
-        "STATUS": "OCIOSO"
+        "STATUS": "EM OFICINA",
+        "DESCRICAO": "EQUIPAMENTO APRESENTOU VAZAMENTO NA PATOLA HIDRAULICA L/E",
+        "DATA ENTRADA": "06/10/2025"
         
     },
     {
