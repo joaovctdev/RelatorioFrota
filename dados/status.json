@@ -33,12 +33,12 @@
     {
         "PLACA": "PHV-1J25",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "OCIOSO",
-        "ENCARREGADO": "MÁRCIO FROTA",
-        "SUPERVISOR": "",
-        "LOCAL": "BASE IRECÊ",
-        "OBRA": "BASE IRECE",
-        "STATUS": "OCIOSO"
+        "MOTORISTA": "RONIVON",
+        "ENCARREGADO": "REVERTON",
+        "SUPERVISOR": "RENATO",
+        "LOCAL": "SÃO GABRIEL",
+        "OBRA": "SÃO GABRIEL",
+        "STATUS": "EM OPERAÇÃO"
     },
     {
         "PLACA": "PHV-1J35",
@@ -61,10 +61,10 @@
     {
         "PLACA": "PHV-1J85",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "ERINALDO",
+        "MOTORISTA": "JORGE ANDRÉ",
         "ENCARREGADO": "ENES",
         "SUPERVISOR": "RENATO",
-        "LOCAL": "SÃO GABRIEL",
+        "LOCAL": "UIBAÍ",
         "STATUS": "EM OPERAÇÃO"
     },
     {
@@ -97,11 +97,11 @@
     {
         "PLACA": "QZC-9J71",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "OCIOSO",
-        "ENCARREGADO": "MÁRCIO FROTA",
-        "SUPERVISOR": "",
-        "LOCAL": "BASE IRECÊ"   ,
-        "STATUS": "OCIOSO"
+        "MOTORISTA": "SÉRGIO",
+        "ENCARREGADO": "ESMERALDO",
+        "SUPERVISOR": "RENATO",
+        "LOCAL": "XIQUE-XIQUE"   ,
+        "STATUS": "EM OPERAÇÃO"
     },
     {
         "PLACA": "QZB-6E32",
@@ -137,9 +137,9 @@
     {
         "PLACA": "SKS-0A44",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "EDER DOURADO",
+        "MOTORISTA": "ERINALDO",
         "ENCARREGADO": "FELIPE",
-        "SUPERVISOR": "",
+        "SUPERVISOR": "RENATO",
         "LOCAL": "BASE IRECÊ",
         "STATUS": "EM OPERAÇÃO"
     },
@@ -173,7 +173,7 @@
     {
         "PLACA": "SKT-8C58",
         "FUNCAO": "LINHA MORTA",
-        "MOTORISTA": "RAILLAN ANDRADE",
+        "MOTORISTA": "RAILAN ANDRADE",
         "ENCARREGADO": "GIORLAN",
         "SUPERVISOR": "RENATO",
         "LOCAL": "XIQUE-XIQUE",
@@ -191,10 +191,10 @@
     {
         "PLACA": "QZZ-8F36",
         "FUNCAO": "CARGA / DESCARGA",
-        "MOTORISTA": "OCIOSO",
+        "MOTORISTA": "MARCELO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "CLEONE",
-        "LOCAL": "BASE IRECÊ",
+        "LOCAL": "MORRO DE CHAPÉU",
         "STATUS": "OCIOSO"
     },
     {
@@ -218,7 +218,7 @@
     {
         "PLACA": "RET-0002",
         "FUNCAO": "ESCAVAÇÃO",
-        "MOTORISTA": "WESLEI CONCEIÇÃO",
+        "MOTORISTA": "VANDERLEI",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "ELOY",
         "LOCAL": "XIQUE-XIQUE",
@@ -227,7 +227,7 @@
     {
         "PLACA": "RET-0003",
         "FUNCAO": "ESCAVAÇÃO",
-        "MOTORISTA": "VAGNO",
+        "MOTORISTA": "WESLEI CONCEIÇÃO",
         "ENCARREGADO": "MÁRCIO FROTA",
         "SUPERVISOR": "ELOY",
         "LOCAL": "MATA VERDE",
