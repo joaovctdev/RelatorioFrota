@@ -1,5 +1,4 @@
 
-// CONTROLE DO HEADER
 const header = document.getElementById("mainHeader");
 let lastScrollY = window.scrollY;
 
@@ -14,19 +13,19 @@ window.addEventListener("scroll", () => {
 
 
 /*********************************************  TABELA FINANCEIRO ********************************************************/
-// Variáveis globais
+
 let allData = [];
 
-// Função para carregar dados do arquivo JSON
+
 function loadData() {
   const loadingIndicator = document.getElementById("loadingIndicator");
   const dataTable = document.getElementById("dataTable");
 
-  // Mostrar loading
+  
   if (loadingIndicator) loadingIndicator.style.display = "block";
   if (dataTable) dataTable.style.display = "none";
 
-  // Carregar o arquivo bd.json que está no mesmo diretório
+  
   fetch("dados/bd.json")
     .then((response) => {
       if (!response.ok) {
@@ -35,7 +34,7 @@ function loadData() {
       return response.json();
     })
     .then((data) => {
-      // Filtrar itens vazios ou com valores em branco
+      
       allData = data.filter(
         (item) =>
           item.A &&
@@ -52,21 +51,21 @@ function loadData() {
     })
     .catch((error) => {
       console.error("Erro ao carregar dados:", error);
-      // Usar dados de exemplo como fallback
+      
       allData = getSampleData();
       populateFilters(allData);
       processData();
     });
 }
 
-// Popular os filtros com os dados
+
 function populateFilters(data) {
   const placaFilter = document.getElementById("placaFilter");
   const monthFilter = document.getElementById("monthFilter");
   const manutencaoFilter = document.getElementById("manutencaoFilter");
   const localidadeFilter = document.getElementById("localidadeFilter");
 
-  // Limpar e popular filtro de placas
+  
   if (placaFilter) {
     placaFilter.innerHTML = '<option value="all">Todas as placas</option>';
     const placas = new Set();
@@ -83,7 +82,7 @@ function populateFilters(data) {
     });
   }
 
-  // Configurar filtro de meses
+  
   if (monthFilter) {
     monthFilter.innerHTML = '<option value="all">Todos os meses</option>';
     const meses = [
@@ -109,7 +108,7 @@ function populateFilters(data) {
     });
   }
 
-  // Configurar filtro de tipos de manutenção
+  
   if (manutencaoFilter) {
     manutencaoFilter.innerHTML = '<option value="all">Todos os tipos</option>';
     const manutencoes = new Set();
@@ -126,7 +125,7 @@ function populateFilters(data) {
     });
   }
 
-  // Configurar filtro de localidade (agora usando item M)
+  
   if (localidadeFilter) {
     localidadeFilter.innerHTML = '<option value="all">Todas as filiais</option>';
     const localidades = new Set();
@@ -144,7 +143,7 @@ function populateFilters(data) {
   }
 }
 
-// Converter data do formato brasileiro para objeto Date
+
 function parseDate(dateString) {
   if (!dateString) return null;
   try {
@@ -167,7 +166,6 @@ function parseDate(dateString) {
   }
 }
 
-// Formatar valor monetário
 function formatCurrency(value) {
   const numValue = typeof value === 'number' ? value : parseFloat(
     value.toString().replace("R$ ", "").replace(/\./g, "").replace(",", ".")
@@ -180,7 +178,7 @@ function formatCurrency(value) {
   }).format(isNaN(numValue) ? 0 : numValue);
 }
 
-// Função para obter dados filtrados com base nos filtros atuais
+
 function getFilteredData() {
   const mesFiltro = document.getElementById("monthFilter")?.value || "all";
   const semanaFiltro = document.getElementById("weekFilter")?.value || "all";
@@ -189,24 +187,24 @@ function getFilteredData() {
   const localidadeFiltro = document.getElementById("localidadeFilter")?.value || "all";
 
   return allData.filter((item) => {
-    // Extrair valores
+    
     const placa = item.D || "";
     const dataEmissao = item.B || "";
     const manutencao = item.F || "";
-    const localidade = item.M || ""; // AGORA usando item M para localidade
+    const localidade = item.M || ""; 
 
-    // Aplicar filtro de placa
+    
     if (placaFiltro !== "all" && placa !== placaFiltro) return false;
 
-    // Aplicar filtro de manutenção
+   
     if (manutencaoFiltro !== "all" && manutencao !== manutencaoFiltro) return false;
 
-    // Aplicar filtro de localidade
+    
     if (localidadeFiltro !== "all" && localidade !== localidadeFiltro) return false;
 
     const dataObj = parseDate(dataEmissao);
     
-    // Filtrar por mês
+    
     if (mesFiltro !== "all") {
       if (!dataObj) return false; // Se não tem data, não passa no filtro de mês
       if (parseInt(mesFiltro) !== dataObj.getMonth()) return false;
@@ -216,7 +214,7 @@ function getFilteredData() {
   });
 }
 
-// Função para rolar até uma seção específica
+
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
   if (element) {
@@ -224,45 +222,43 @@ function scrollToSection(sectionId) {
   }
 }
 
-// Processar dados e preencher a tabela
+
 function processData() {
   const tableBody = document.getElementById("tableBody");
   const loadingIndicator = document.getElementById("loadingIndicator");
   const dataTable = document.getElementById("dataTable");
 
-  // Esconder indicador de carregamento e mostrar tabela
   if (loadingIndicator) loadingIndicator.style.display = "none";
   if (dataTable) dataTable.style.display = "table";
 
-  // Limpar tabela
   if (tableBody) tableBody.innerHTML = "";
 
-  // Obter dados filtrados
+  
   const filteredData = getFilteredData();
 
   if (filteredData.length === 0) {
-    // Se não houver dados, mostrar mensagem
+    
     const row = document.createElement("tr");
     row.innerHTML = `<td colspan="8" style="text-align: center; padding: 20px; color: #666;">Nenhum dado encontrado com os filtros aplicados</td>`;
     tableBody.appendChild(row);
     
-    // Atualizar resumo com zeros
+    
     updateSummary(0, 0, 0);
     return;
   }
 
-  // Processar cada item
+  
   let total = 0;
   let highest = 0;
   let vehicles = new Set();
 
   filteredData.forEach((item) => {
-    // Extrair e formatar valores
+    
     const fornecedor = item.A || "";
     const dataEmissao = item.B || "";
     const mes = item.C || "";
     const placa = item.D || "";
-    const localidade = item.M || ""; // AGORA usando item M para localidade
+    const localidade = item.M || ""; 
     const manutencao = item.F || "";
     const prazoPagamento = item.H || "";
     const precoTexto = item.J || "R$ 0,00";
@@ -271,7 +267,7 @@ function processData() {
     ) || 0;
     const descricao = item.L || "";
 
-    // Adicionar à tabela
+    
     if (tableBody) {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -287,17 +283,17 @@ function processData() {
       tableBody.appendChild(row);
     }
 
-    // Atualizar totais
+    
     total += preco;
     if (preco > highest) highest = preco;
     if (placa) vehicles.add(placa);
   });
 
-  // Atualizar resumo
+  
   updateSummary(total, highest, vehicles.size);
 }
 
-// Atualizar o resumo financeiro
+
 function updateSummary(total, highest, vehicleCount) {
   const totalElement = document.getElementById("totalSpent");
   const highestElement = document.getElementById("highestExpense");
@@ -311,7 +307,7 @@ function updateSummary(total, highest, vehicleCount) {
   }
 }
 
-// Função para alternar a visualização da tabela (recolher/expandir)
+
 function setupTableToggle() {
   const toggleBtn = document.getElementById("toggleTableBtn");
   const tableContainer = document.getElementById("tableContainer");
@@ -338,7 +334,7 @@ function setupTableToggle() {
   });
 }
 
-// Configurar eventos dos filtros
+
 function setupFilterEvents() {
   const monthFilter = document.getElementById("monthFilter");
   const weekFilter = document.getElementById("weekFilter");
@@ -346,7 +342,7 @@ function setupFilterEvents() {
   const manutencaoFilter = document.getElementById("manutencaoFilter");
   const localidadeFilter = document.getElementById("localidadeFilter");
 
-  // Adicionar eventos de change a todos os filtros
+  
   const filters = [monthFilter, weekFilter, placaFilter, manutencaoFilter, localidadeFilter];
   
   filters.forEach(filter => {
@@ -358,22 +354,22 @@ function setupFilterEvents() {
   });
 }
 
-// Função para atualizar os filtros
+
 function updateFilters() {
-  // Mostrar indicador de carregamento
+  
   const loadingIndicator = document.getElementById("loadingIndicator");
   const dataTable = document.getElementById("dataTable");
 
   if (loadingIndicator) loadingIndicator.style.display = "block";
   if (dataTable) dataTable.style.display = "none";
 
-  // Processar dados com filtros aplicados após um pequeno delay para melhor UX
+  
   setTimeout(() => {
     processData();
   }, 100);
 }
 
-// Função para limpar todos os filtros
+
 function clearAllFilters() {
   const monthFilter = document.getElementById("monthFilter");
   const weekFilter = document.getElementById("weekFilter");
@@ -390,12 +386,12 @@ function clearAllFilters() {
   updateFilters();
 }
 
-// Adicionar botão de limpar filtros se não existir
+
 function addClearFiltersButton() {
   const filterSection = document.querySelector('.filter-section');
   if (!filterSection) return;
 
-  // Verificar se o botão já existe
+ 
   if (document.getElementById('clearFiltersBtn')) return;
 
   const clearButton = document.createElement('button');
@@ -408,7 +404,7 @@ function addClearFiltersButton() {
 }
 
 
-// Inicializar a página
+
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
   setupFilterEvents();
@@ -417,10 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // ====== CONFIGURAÇÃO DO RELATÓRIO FOTOGRÁFICO ======
 
-// Variáveis globais
+
 window.fotosVeiculos = [];
 
-// Mapeamento de meses para valores numéricos
+
 const mesesMap = {
   janeiro: 0,
   fevereiro: 1,
@@ -436,14 +432,14 @@ const mesesMap = {
   dezembro: 11,
 };
 
-// Função para converter nome do mês para número
+
 function mesParaNumero(mes) {
   return mesesMap[mes.toLowerCase()] !== undefined
     ? mesesMap[mes.toLowerCase()]
     : -1;
 }
 
-// Função para converter número para nome do mês
+
 function numeroParaMes(numero) {
   return (
     Object.keys(mesesMap).find((key) => mesesMap[key] === parseInt(numero)) ||
@@ -451,7 +447,7 @@ function numeroParaMes(numero) {
   );
 }
 
-// Função para converter link do Google Drive
+
 function converterLinkGoogleDrive(link) {
   if (!link) return "";
   if (link.includes("thumbnail")) return link;
@@ -463,7 +459,7 @@ function converterLinkGoogleDrive(link) {
   return link;
 }
 
-// Função para carregar fotos
+
 function carregarFotosVeiculos() {
   fetch("dados/fotos.json")
     .then((response) => {
@@ -480,7 +476,7 @@ function carregarFotosVeiculos() {
     });
 }
 
-// Processar dados das fotos
+
 function processarFotosVeiculos(dados) {
   if (!dados || dados.length === 0) {
     mostrarMensagemErro("Nenhum dado disponível");
@@ -522,7 +518,7 @@ function processarFotosVeiculos(dados) {
   carregarRelatorioFotografico();
 }
 
-// Popular filtros
+
 function popularFiltrosFotos() {
   const mesFilter = document.getElementById("fotoMonthFilter");
   const semanaFilter = document.getElementById("fotoWeekFilter");
@@ -533,17 +529,17 @@ function popularFiltrosFotos() {
     return;
   }
 
-  // Limpar e popular filtros
+  
   frotaFilter.innerHTML = '<option value="all">Todas as frotas</option>';
   semanaFilter.innerHTML = '<option value="all">Todas as semanas</option>';
 
-  // Popular opções de frota (fixas)
+ 
   frotaFilter.innerHTML += `
     <option value="LEVE">Leve</option>
     <option value="PESADA">Pesada</option>
   `;
 
-  // Popular semanas
+  
   const semanas = [...new Set(window.fotosVeiculos.map((v) => v.semana))];
   semanas
     .sort((a, b) => a - b)
@@ -551,9 +547,9 @@ function popularFiltrosFotos() {
       semanaFilter.innerHTML += `<option value="${semana}">Semana ${semana}</option>`;
     });
   // FILTRO PADRÃO FOTOGRAFICO // 
-  // Definir valores padrão do relatorio fotografico
-  mesFilter.value = "9"; // Setembro é o mês 8 (0-indexed)
-  frotaFilter.value = "Todas as frotas"; // Valor padrão para frota
+  
+  mesFilter.value = "9";
+  frotaFilter.value = "Todas as frotas"; 
   if (semanas.includes(1)) {
     semanaFilter.value = "1";
   }
@@ -565,9 +561,9 @@ function popularFiltrosFotos() {
   });
 }
 
-// Função para visualização ampliada
+
 function abrirVisualizacaoAmpliada(src, alt) {
-  // Criar modal
+ 
   const modal = document.createElement("div");
   modal.style.cssText = `
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -599,16 +595,15 @@ function abrirVisualizacaoAmpliada(src, alt) {
   modal.appendChild(closeBtn);
   document.body.appendChild(modal);
 }
-// Função para rolar até uma seção específica
+
 function scrollToSection(sectionId) {
   const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({ behavior: "smooth" });
   }
 }
-// Dados de exemplo com informações de oficina
+
 /************************************************ INICIO RELATORIO STATUS ***********************************************/
-// Função para converter data do formato brasileiro (dd/mm/aaaa) para Date
 function converterData(dataString) {
   if (!dataString) return null;
   
@@ -617,13 +612,13 @@ function converterData(dataString) {
     if (partes.length !== 3) return null;
     
     const dia = parseInt(partes[0]);
-    const mes = parseInt(partes[1]) - 1; // Mês é 0-indexed no JavaScript
+    const mes = parseInt(partes[1]) - 1; 
     const ano = parseInt(partes[2]);
     
-    // Validar se os valores são números válidos
+    
     if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return null;
     
-    // Validar ranges
+    
     if (dia < 1 || dia > 31) return null;
     if (mes < 0 || mes > 11) return null;
     if (ano < 2000 || ano > 2100) return null;
@@ -635,7 +630,6 @@ function converterData(dataString) {
   }
 }
 
-// Função para calcular dias na oficina baseado na DATA ENTRADA
 function calcularDiasOficina(dataEntradaString) {
   if (!dataEntradaString) return 0;
 
@@ -644,7 +638,7 @@ function calcularDiasOficina(dataEntradaString) {
 
   const hoje = new Date();
   
-  // Resetar horas para evitar problemas de timezone
+  
   const hojeReset = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
   const entradaReset = new Date(dataEntrada.getFullYear(), dataEntrada.getMonth(), dataEntrada.getDate());
   
@@ -654,7 +648,7 @@ function calcularDiasOficina(dataEntradaString) {
   return diffDias;
 }
 
-// Função para carregar dados do status.json
+
 async function carregarDadosFrota() {
   try {
     const response = await fetch("dados/status.json");
@@ -675,7 +669,7 @@ async function carregarDadosFrota() {
   }
 }
 
-// Função para exibir os dados na tabela
+
 function exibirDadosFrota(data) {
   const tableBody = document.getElementById("frota-table-body");
   if (!tableBody) {
@@ -685,7 +679,7 @@ function exibirDadosFrota(data) {
   
   tableBody.innerHTML = "";
 
-  // Verificar se há dados
+  
   if (!data || data.length === 0) {
     tableBody.innerHTML = `
       <tr>
@@ -698,7 +692,7 @@ function exibirDadosFrota(data) {
   }
 
   data.forEach((veiculo, index) => {
-    // Determinar a classe de status
+    
     let statusClass = "";
     let statusText = "";
     const status = veiculo.STATUS || veiculo.status || "";
@@ -717,7 +711,7 @@ function exibirDadosFrota(data) {
       statusText = status || "STATUS INDEFINIDO";
     }
 
-    // Criar linha principal
+    
     const row = document.createElement("tr");
     row.classList.add("veiculo-row");
     row.dataset.index = index;
@@ -737,7 +731,7 @@ function exibirDadosFrota(data) {
 
     tableBody.appendChild(row);
 
-    // Adicionar linha de detalhes para veículos na oficina
+   
     if (status.includes("OFICINA")) {
       const dataEntrada = veiculo["DATA ENTRADA"] || veiculo["DATA_ENTRADA"] || veiculo.data_entrada;
       const diasOficina = calcularDiasOficina(dataEntrada);
@@ -747,7 +741,7 @@ function exibirDadosFrota(data) {
       detailsRow.classList.add("oficina-details");
       detailsRow.dataset.parentIndex = index;
 
-      // Formatar data de entrada para exibição
+      
       let dataFormatada = "Data não informada";
       if (dataEntrada) {
         const dataObj = converterData(dataEntrada);
@@ -782,7 +776,7 @@ function exibirDadosFrota(data) {
     }
   });
 
-  // Adicionar event listeners para as linhas
+  
   document.querySelectorAll(".veiculo-row").forEach((row) => {
     row.addEventListener("click", function () {
       const index = this.dataset.index;
@@ -791,7 +785,7 @@ function exibirDadosFrota(data) {
       );
 
       if (detailsRow) {
-        // Fechar outros detalhes abertos
+        
         document.querySelectorAll(".oficina-details.active").forEach((detail) => {
           if (detail !== detailsRow) {
             detail.classList.remove("active");
@@ -799,18 +793,18 @@ function exibirDadosFrota(data) {
           }
         });
 
-        // Alternar visibilidade dos detalhes
+        
         detailsRow.classList.toggle("active");
         this.classList.toggle("row-selected");
       }
     });
   });
 
-  // Inicializar filtros após carregar os dados
+  
   inicializarFiltros();
 }
 
-// Função para inicializar os filtros
+
 function inicializarFiltros() {
   const searchInput = document.getElementById("search-input");
   const filterBtns = document.querySelectorAll(".filter-btn");
@@ -821,16 +815,16 @@ function inicializarFiltros() {
   
   filterBtns.forEach(btn => {
     btn.addEventListener("click", function() {
-      // Remover classe active de todos os botões
+      
       filterBtns.forEach(b => b.classList.remove("active"));
-      // Adicionar classe active ao botão clicado
+      
       this.classList.add("active");
       filtrarTabela();
     });
   });
 }
 
-// Função para filtrar a tabela
+
 function filtrarTabela() {
   const searchInput = document.getElementById("search-input");
   const activeFilter = document.querySelector(".filter-btn.active");
@@ -858,7 +852,7 @@ function filtrarTabela() {
 
     let shouldShow = true;
 
-    // Aplicar filtro de status
+    
     if (statusFilter !== "all") {
       if (statusFilter === "operacao" && !statusCell.includes("operação") && !statusCell.includes("operacao")) 
         shouldShow = false;
@@ -868,7 +862,7 @@ function filtrarTabela() {
         shouldShow = false;
     }
 
-    // Aplicar filtro de texto
+    
     if (searchText) {
       const match = 
         placaCell.includes(searchText) ||
@@ -883,7 +877,7 @@ function filtrarTabela() {
 
     row.style.display = shouldShow ? "" : "none";
 
-    // Mostrar/ocultar detalhes correspondentes
+    
     const index = row.dataset.index;
     const detailsRow = document.querySelector(
       `.oficina-details[data-parent-index="${index}"]`
@@ -900,7 +894,7 @@ function filtrarTabela() {
     if (shouldShow) resultadosVisiveis++;
   });
 
-  // Mostrar mensagem se não houver resultados
+  
   const mensagemSemResultados = document.getElementById('mensagem-sem-resultados');
   if (!mensagemSemResultados && resultadosVisiveis === 0 && rows.length > 0) {
     const tr = document.createElement('tr');
@@ -914,9 +908,9 @@ function filtrarTabela() {
   }
 }
 
-// Função para atualizar os dias na oficina periodicamente (opcional)
+
 function iniciarAtualizacaoAutomatica() {
-  // Atualizar a contagem de dias a cada hora
+  
   setInterval(() => {
     const diasElements = document.querySelectorAll('.dias-count');
     diasElements.forEach(element => {
@@ -929,7 +923,7 @@ function iniciarAtualizacaoAutomatica() {
             const novosDias = calcularDiasOficina(dataString);
             element.textContent = `${novosDias} dias`;
             
-            // Atualizar classe de alerta se necessário
+            
             if (novosDias > 30) {
               element.classList.add('dias-alerta');
             } else {
@@ -939,10 +933,10 @@ function iniciarAtualizacaoAutomatica() {
         }
       }
     });
-  }, 3600000); // A cada hora
+  }, 3600000); 
 }
 
-// Carregar dados quando a página estiver pronta
+
 document.addEventListener('DOMContentLoaded', function() {
   carregarDadosFrota();
   iniciarAtualizacaoAutomatica();
@@ -950,12 +944,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /****************************************************** FIM RELATÓRIO STATUS *******************************************/
 //******************** SEÇÃO DO RASTREAMENTO ****************** //
-// Variáveis globais
+
 let selectedPlaca = null;
 let filteredData = [];
-let trajetoData = []; // Inicialmente vazio
+let trajetoData = []; 
 
-// Função para converter link do Google Drive
+
 function converterLinkGoogleDrive(link) {
   if (!link) return "";
   if (link.includes("thumbnail")) return link;
@@ -967,11 +961,11 @@ function converterLinkGoogleDrive(link) {
   return link;
 }
 
-// Função para carregar dados do JSON
+
 function carregarDadosRastreio() {
   console.log("Carregando dados de rastreio...");
   
-  // Tenta carregar do arquivo rastreio.json
+  
   fetch("dados/rastreio.json")
     .then((response) => {
       if (!response.ok) {
@@ -986,7 +980,7 @@ function carregarDadosRastreio() {
     })
     .catch((error) => {
       console.error(error);
-      // Usar dados de exemplo se o arquivo não for encontrado
+     
       trajetoData = [
         {
           A: "01/10/2024",
@@ -1022,11 +1016,11 @@ function carregarDadosRastreio() {
     });
 }
 
-// Função para inicializar a aplicação
+
 function init() {
   console.log("Inicializando rastreamento...");
   
-  // Inicialmente mostrar a mensagem de seleção e esconder os detalhes
+ 
   document.getElementById("no-data-selected").style.display = "block";
   document.getElementById("details-content").style.display = "none";
 
@@ -1046,7 +1040,7 @@ function aplicarFiltroPadrao() {
     return;
   }
 
-  // Configurar Outubro como padrão
+ 
   let outubroEncontrado = false;
   for (let option of monthFilter.options) {
     if (option.value.toLowerCase().includes('outubro') || option.text.toLowerCase().includes('outubro')) {
@@ -1062,7 +1056,7 @@ function aplicarFiltroPadrao() {
     console.log("Outubro não encontrado, usando:", monthFilter.options[1].value);
   }
 
-  // Configurar Semana 1 como padrão
+ 
   let semana1Encontrada = false;
   for (let option of weekFilter.options) {
     if (option.value.includes('1') || option.text.includes('1')) {
@@ -1078,11 +1072,11 @@ function aplicarFiltroPadrao() {
     console.log("Semana 1 não encontrada, usando:", weekFilter.options[1].value);
   }
 
-  // Aplicar os filtros
+  
   aplicarFiltros();
 }
 
-// Configurar filtros
+
 function setupFilters() {
   console.log("Configurando filtros...");
   
@@ -1097,12 +1091,11 @@ function setupFilters() {
     return;
   }
 
-  // Limpar filtros
+ 
   monthFilter.innerHTML = '<option value="all">Todos os meses</option>';
   weekFilter.innerHTML = '<option value="all">Todas as semanas</option>';
   placaFilter.innerHTML = '<option value="all">Todas as placas</option>';
 
-  // Extrair meses únicos (coluna O)
   const mesesUnicos = [...new Set(trajetoData.map((item) => item.O || "Mês não informado"))];
   console.log("Meses únicos:", mesesUnicos);
   
@@ -1113,7 +1106,6 @@ function setupFilters() {
     monthFilter.appendChild(option);
   });
 
-  // Extrair semanas únicas (coluna N)
   const semanasUnicas = [...new Set(trajetoData.map((item) => item.N || "Semana não informada"))];
   console.log("Semanas únicas:", semanasUnicas);
   
@@ -1124,7 +1116,7 @@ function setupFilters() {
     weekFilter.appendChild(option);
   });
 
-  // Extrair placas únicas
+ 
   const placasUnicas = [...new Set(trajetoData.map((item) => item.B))].filter(placa => placa);
   console.log("Placas únicas:", placasUnicas);
   
@@ -1135,7 +1127,7 @@ function setupFilters() {
     placaFilter.appendChild(option);
   });
 
-  // Configurar eventos dos filtros
+  
   monthFilter.addEventListener("change", aplicarFiltros);
   weekFilter.addEventListener("change", aplicarFiltros);
   placaFilter.addEventListener("change", aplicarFiltros);
@@ -1148,13 +1140,13 @@ function setupFilters() {
     typeFilter.addEventListener("change", aplicarFiltros);
   }
 
-  // Aplicar filtros padrão após um pequeno delay
+  
   setTimeout(() => {
     aplicarFiltroPadrao();
   }, 100);
 }
 
-// Aplicar filtros
+
 function aplicarFiltros() {
   console.log("Aplicando filtros...");
   
@@ -1183,7 +1175,7 @@ function aplicarFiltros() {
     tipo: tipoSelecionado
   });
 
-  // Filtrar dados com base nos filtros
+  
   let dadosFiltrados = trajetoData;
 
   if (mesSelecionado !== "all") {
@@ -1202,7 +1194,7 @@ function aplicarFiltros() {
     dadosFiltrados = dadosFiltrados.filter((item) => item.C === tipoSelecionado);
   }
 
-  // Filtrar por manutenção
+
   if (manutencaoSelecionada !== "all") {
     if (manutencaoSelecionada === "com_manutencao") {
       dadosFiltrados = dadosFiltrados.filter((item) => parseInt(item.H) > 15);
@@ -1213,11 +1205,11 @@ function aplicarFiltros() {
 
   console.log("Dados após filtro:", dadosFiltrados);
 
-  // Extrair placas únicas dos dados filtrados
+ 
   const placasFiltradas = [...new Set(dadosFiltrados.map((item) => item.B))].filter(placa => placa);
   console.log("Placas filtradas:", placasFiltradas);
 
-  // Atualizar lista de placas
+
   const placasList = document.getElementById("placas-list");
   if (!placasList) {
     console.error("Elemento placas-list não encontrado");
@@ -1227,7 +1219,7 @@ function aplicarFiltros() {
   placasList.innerHTML = "";
 
   placasFiltradas.forEach((placa) => {
-    // Encontrar a data mais recente para esta placa
+   
     const dadosPlaca = dadosFiltrados.filter((item) => item.B === placa);
     const datasPlaca = dadosPlaca.map((item) => item.A).filter(data => data);
     
@@ -1254,48 +1246,39 @@ function aplicarFiltros() {
     placasList.appendChild(placaItem);
   });
 
-  // Atualizar contador
   const placasCount = document.getElementById("placas-count");
   if (placasCount) {
     placasCount.textContent = placasFiltradas.length;
   }
 
-  // Se a placa selecionada não estiver mais na lista filtrada, limpar detalhes
   if (selectedPlaca && !placasFiltradas.includes(selectedPlaca)) {
     document.getElementById("no-data-selected").style.display = "block";
     document.getElementById("details-content").style.display = "none";
     selectedPlaca = null;
   }
 
-  // Se há apenas uma placa após filtrar, selecioná-la automaticamente
   if (placasFiltradas.length === 1 && !selectedPlaca) {
     selectPlaca(placasFiltradas[0]);
   }
 }
 
-// Selecionar uma placa
 function selectPlaca(placa) {
   console.log("Selecionando placa:", placa);
   
   selectedPlaca = placa;
 
-  // Atualizar UI
   document.querySelectorAll(".placa-item").forEach((item) => {
     item.classList.remove("active");
     if (item.dataset.placa === placa) {
       item.classList.add("active");
     }
   });
-
-  // Mostrar detalhes
+  
   document.getElementById("no-data-selected").style.display = "none";
   document.getElementById("details-content").style.display = "block";
-
-  // Carregar dados da placa
   loadPlacaDetails(placa);
 }
 
-// Carregar detalhes da placa selecionada
 function loadPlacaDetails(placa) {
   console.log("Carregando detalhes da placa:", placa);
   
@@ -1308,10 +1291,8 @@ function loadPlacaDetails(placa) {
     return;
   }
 
-  // Filtrar dados por placa
   filteredData = trajetoData.filter((item) => item.B === placa);
 
-  // Aplicar filtros adicionais
   const monthFilter = document.getElementById("month-filter");
   const weekFilter = document.getElementById("week-filter");
 
@@ -1325,19 +1306,15 @@ function loadPlacaDetails(placa) {
 
   console.log("Dados filtrados para a placa:", filteredData);
 
-  // Atualizar header com placa e porte
   placaText.textContent = placa;
 
-  // Obter o porte
   if (filteredData.length > 0) {
     porteText.textContent = filteredData[0].C || "Porte não informado";
   }
 
-  // Popular filtro de datas no painel de detalhes
   detailDateFilter.innerHTML = "";
   const datasPlaca = [...new Set(filteredData.map((item) => item.A))].filter(data => data);
   
-  // Ordenar datas do mais recente para o mais antigo
   datasPlaca.sort((a, b) => {
     const [dayA, monthA, yearA] = a.split("/").map(Number);
     const [dayB, monthB, yearB] = b.split("/").map(Number);
@@ -1348,7 +1325,6 @@ function loadPlacaDetails(placa) {
     const option = document.createElement("option");
     option.value = data;
 
-    // Adicionar dia da semana
     const [dia, mes, ano] = data.split("/").map(Number);
     const dataObj = new Date(ano, mes - 1, dia);
     const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
@@ -1358,12 +1334,10 @@ function loadPlacaDetails(placa) {
     detailDateFilter.appendChild(option);
   });
 
-  // Selecionar a data mais recente por padrão
   if (datasPlaca.length > 0) {
     detailDateFilter.value = datasPlaca[0];
     showDataForDate(datasPlaca[0]);
   } else {
-    // Se não há dados, mostrar mensagem
     const detailsGrid = document.querySelector(".details-grid");
     if (detailsGrid) {
       detailsGrid.innerHTML = '<div class="no-data"><i class="fas fa-exclamation-circle"></i><p>Nenhum dado encontrado para esta placa</p></div>';
@@ -1371,7 +1345,6 @@ function loadPlacaDetails(placa) {
   }
 }
 
-// Mostrar dados para uma data específica
 function showDataForDate(data) {
   console.log("Mostrando dados para data:", data);
   
@@ -1384,7 +1357,6 @@ function showDataForDate(data) {
     return;
   }
 
-  // Encontrar os dados para a data selecionada
   const dataItem = filteredData.find((item) => item.A === data);
 
   if (!dataItem) {
@@ -1392,7 +1364,6 @@ function showDataForDate(data) {
     return;
   }
 
-  // Atualizar os detalhes na grid
   detailsGrid.innerHTML = `
     <div class="detail-card">
       <h3>Data</h3>
@@ -1428,7 +1399,6 @@ function showDataForDate(data) {
     </div>
   `;
 
-  // Carregar imagem do mapa
   if (dataItem.M) {
     const convertedLink = converterLinkGoogleDrive(dataItem.M);
     
@@ -1455,11 +1425,9 @@ function showDataForDate(data) {
   }
 }
 
-// Configurar event listeners
 function setupEventListeners() {
   console.log("Configurando event listeners...");
   
-  // Filtro de pesquisa de placas
   const searchPlacas = document.getElementById("search-placas");
   if (searchPlacas) {
     searchPlacas.addEventListener("input", function () {
@@ -1471,7 +1439,6 @@ function setupEventListeners() {
     });
   }
 
-  // Filtro de data no painel de detalhes
   const detailDateFilter = document.getElementById("detail-date-filter");
   if (detailDateFilter) {
     detailDateFilter.addEventListener("change", function () {
@@ -1479,7 +1446,6 @@ function setupEventListeners() {
     });
   }
 
-  // Botão fechar painel
   const closePanel = document.getElementById("close-panel");
   if (closePanel) {
     closePanel.addEventListener("click", function () {
@@ -1492,7 +1458,6 @@ function setupEventListeners() {
     });
   }
 
-  // Modal da imagem
   const mapImage = document.getElementById("map-image");
   const modal = document.getElementById("image-modal");
   const modalImg = document.getElementById("modal-image");
@@ -1519,7 +1484,6 @@ function setupEventListeners() {
   }
 }
 
-// Inicializar quando a página carregar
 document.addEventListener("DOMContentLoaded", function() {
   console.log("DOM carregado, iniciando rastreamento...");
   carregarDadosRastreio();
@@ -1531,7 +1495,6 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function () {
   carregarDadosFrota();
 
-  // Configurar eventos de filtro
   document
     .getElementById("search-input")
     .addEventListener("input", filtrarTabela);
@@ -1546,10 +1509,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Ativar o filtro "Todos" por padrão
   document.querySelector('[data-status="all"]').classList.add("active");
 });
-// Carregar relatório fotográfico
 function carregarRelatorioFotografico() {
   const mesFiltro =
     document.getElementById("fotoMonthFilter")?.value || "all";
@@ -1570,19 +1531,16 @@ function carregarRelatorioFotografico() {
   galeria.innerHTML = "";
 
   const veiculosFiltrados = window.fotosVeiculos.filter((veiculo) => {
-    // Filtro por mês (comparando números)
     if (mesFiltro !== "all" && veiculo.mesNumero != mesFiltro) {
       console.log("Filtrando mês:", veiculo.mesNumero, "!=", mesFiltro);
       return false;
     }
 
-    // Filtro por semana
     if (semanaFiltro !== "all" && veiculo.semana != semanaFiltro) {
       console.log("Filtrando semana:", veiculo.semana, "!=", semanaFiltro);
       return false;
     }
 
-    // Filtro por frota
     if (frotaFiltro !== "all" && veiculo.frota !== frotaFiltro) {
       console.log("Filtrando frota:", veiculo.frota, "!=", frotaFiltro);
       return false;
@@ -1637,7 +1595,6 @@ function mostrarMensagemErro(msg) {
   if (galeria) galeria.innerHTML = `<div class="sem-fotos">${msg}</div>`;
 }
 
-// Configurar eventos
 function configurarFiltrosFotos() {
   const monthFilter = document.getElementById("fotoMonthFilter");
   const weekFilter = document.getElementById("fotoWeekFilter");
@@ -1651,7 +1608,6 @@ function configurarFiltrosFotos() {
     frotaFilter.addEventListener("change", carregarRelatorioFotografico);
 }
 
-// Adicionar estilos
 const addStyles = () => {
   const style = document.createElement("style");
   style.textContent = `
@@ -1689,23 +1645,19 @@ const addStyles = () => {
   document.head.appendChild(style);
 };
 
-// Inicializar
 document.addEventListener("DOMContentLoaded", () => {
   addStyles();
   configurarFiltrosFotos();
   carregarFotosVeiculos();
 
-  // Tornar funções globais
   window.abrirVisualizacaoAmpliada = abrirVisualizacaoAmpliada;
   window.carregarRelatorioFotografico = carregarRelatorioFotografico;
 });
 /***************************************** FIM DO RELATÓRIO FOTOGRÁFICO **********************************************/
 // *************************************** INICIO DO RELATÓRIO DE MANUTENÇÃO *************************************  //
 
-// Variáveis globais
 window.manutencaoData = [];
 
-// Função para carregar dados de manutenção
 function carregarManutencaoData() {
   fetch("dados/manutencao.json")
     .then((response) => {
@@ -1722,7 +1674,7 @@ function carregarManutencaoData() {
     });
 }
 
-// Processar dados de manutenção
+
 function processarManutencaoData(dados) {
   if (!dados || dados.length === 0) {
     mostrarMensagemErroManutencao("Nenhum dado de manutenção disponível");
@@ -1730,7 +1682,6 @@ function processarManutencaoData(dados) {
   }
 
   window.manutencaoData = dados.map((item) => {
-    // Verificar e corrigir possíveis variações nas chaves
     const descricao =
       item.DESCRICAO ||
       item.DESCRIÇÃO ||
@@ -1776,7 +1727,6 @@ function processarManutencaoData(dados) {
   carregarRelatorioManutencao();
 }
 
-// Popular filtros de manutenção
 function popularFiltrosManutencao() {
   const mesFilter = document.getElementById("manutencaoMonthFilter");
   const semanaFilter = document.getElementById("manutencaoWeekFilter");
@@ -1785,18 +1735,15 @@ function popularFiltrosManutencao() {
 
   if (!mesFilter || !semanaFilter || !placaFilter || !tipoFilter) return;
 
-  // Limpar filtros
   placaFilter.innerHTML = '<option value="all">Todas as placas</option>';
   semanaFilter.innerHTML = '<option value="all">Todas as semanas</option>';
   tipoFilter.innerHTML = '<option value="all">Todos os tipos</option>';
 
-  // Popular placas
   const placas = [...new Set(window.manutencaoData.map((v) => v.placa))];
   placas.forEach((placa) => {
     placaFilter.innerHTML += `<option value="${placa}">${placa}</option>`;
   });
 
-  // Popular semanas
   const semanas = [...new Set(window.manutencaoData.map((v) => v.semana))];
   semanas
     .sort((a, b) => a - b)
@@ -1804,7 +1751,6 @@ function popularFiltrosManutencao() {
       semanaFilter.innerHTML += `<option value="${semana}">Semana ${semana}</option>`;
     });
 
-  // Popular tipos de manutenção
   const tipos = [...new Set(window.manutencaoData.map((v) => v.tipo))];
   tipos.forEach((tipo) => {
     tipoFilter.innerHTML += `<option value="${tipo}">${tipo}</option>`;
@@ -1813,16 +1759,15 @@ function popularFiltrosManutencao() {
   // Definir valores padrão
   mesFilter.value = "9"; 
 
-  // ALTERAÇÃO AQUI: Priorizar semana 3, se disponível
-  if (semanas.includes(1)) {
-    semanaFilter.value = "1";
+  // ALTERAÇÃO AQUI:
+  if (semanas.includes(2)) {
+    semanaFilter.value = "2";
   } else if (semanas.length > 0) {
-    // Se semana 3 não estiver disponível, usar a primeira semana disponível
+    
     semanaFilter.value = semanas[0].toString();
   }
 }
 
-// Carregar relatório de manutenção
 function carregarRelatorioManutencao() {
   const mesFiltro =
     document.getElementById("manutencaoMonthFilter")?.value || "all";
@@ -1904,7 +1849,6 @@ function mostrarMensagemErroManutencao(msg) {
   if (galeria) galeria.innerHTML = `<div class="sem-fotos">${msg}</div>`;
 }
 
-// Configurar eventos dos filtros de manutenção
 function configurarFiltrosManutencao() {
   const monthFilter = document.getElementById("manutencaoMonthFilter");
   const weekFilter = document.getElementById("manutencaoWeekFilter");
@@ -1921,7 +1865,6 @@ function configurarFiltrosManutencao() {
     tipoFilter.addEventListener("change", carregarRelatorioManutencao);
 }
 
-// Inicializar relatório de manutenção
 document.addEventListener("DOMContentLoaded", () => {
   configurarFiltrosManutencao();
   carregarManutencaoData();

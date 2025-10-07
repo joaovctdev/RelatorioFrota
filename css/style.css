@@ -829,7 +829,6 @@ input {
   color: #ccc;
 }
 
-/* Modal para imagem ampliada */
 .modal {
   display: none;
   position: fixed;
@@ -867,7 +866,7 @@ input {
   color: #bbb;
 }
 
-/* Responsividade */
+
 @media (max-width: 1200px) {
   .trajeto-container {
     flex-direction: column;
@@ -901,7 +900,7 @@ input {
   }
 }
 
-/* Barra de rolagem personalizada */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -1279,7 +1278,7 @@ input {
   .manutencao-fotos {
     grid-template-columns: repeat(2, 1fr);
   }
-  /* Estilos para os botões de filial */
+  
       .filial-buttons {
         display: flex;
         gap: 10px;
@@ -1308,7 +1307,7 @@ input {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       }
 
-      /* Animação de transição */
+      
       .page-transition {
         opacity: 0;
         transform: translateY(10px);
@@ -1320,7 +1319,6 @@ input {
         transform: translateY(0);
       }
 
-      /* Ajustes no header */
       .header-content {
         display: flex;
         align-items: center;

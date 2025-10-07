@@ -25,6 +25,19 @@
         "DESCRICAO": "EQUIPAMENTO APRESENTOU TRINCAS NAS LANÇAS, FOI NECESSÁRIO UMA SOLDA NO LOCAL",
         "CUSTO": 600,
         "LOCALIDADE": "IRECE"  
+    },
+    {
+        "MES": "Outubro",
+        "SEMANA": "1",
+        "PLACA": "QZL-7E78",
+        "MANUTENÇÃO": "CORRETIVA",
+        "FOTO FRENTE": "https://drive.google.com/file/d/147wXT3EmO0vMJ-druVxXEp_CfEXerq8g/view?usp=drive_link",
+        "FOTO AVARIA": "https://drive.google.com/file/d/112Qw643Z6HHKmAAMvSWFBrKGDVtjVAuM/view?usp=drive_link", 
+        "FOTO MANUTENCAO": "https://drive.google.com/file/d/1g-PvHEcq6hJqfo18oG2W1bOkNybbMHNE/view?usp=drive_link",
+        "FOTO KM": "https://drive.google.com/file/d/1XpUddu3DmxBKpG5FSuQiCiNIulRevgxQ/view?usp=drive_link",
+        "DESCRICAO": "CABINE AUXILIAR APARENTOU ESTAR SOLTA, FOI NECESSÁRIO SOLDA NO LOCAL",
+        "CUSTO": 400,
+        "LOCALIDADE": "IRECE"  
     }
    
 ]
